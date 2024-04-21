@@ -1,0 +1,46 @@
+# @brief Creates a test suite for 'googletest' and adds it to 'ctest', each test suite maps to an executable target.
+# @param[in] The name of the test suite to create.
+function(define_test_suite TEST_SUITE_NAME)
+    add_executable(${TEST_SUITE_NAME})
+
+    # Link against GoogleTest and GoogleMock.
+    target_link_libraries(${TEST_SUITE_NAME} PRIVATE gtest gmock)
+
+    # Add additional GoogleTest and GoogleMock related functionality to the test suite.
+    target_sources(${TEST_SUITE_NAME} PRIVATE
+        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils/googletest_defs.cpp"
+    )
+
+    # Set installation runtime directories.
+    install(TARGETS ${TEST_SUITE_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_RUNTIMEDIR}")
+
+    # Add include directory to the test utilities.
+    target_include_directories(${TEST_SUITE_NAME} PRIVATE
+        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils"
+    )
+
+    # If running on CI, then enable XML output on GoogleTest, otherwise use the default standard output.
+    if((DEFINED CFG_CI) AND (${CFG_CI}))
+        set(TEST_XML_DIR "${PROJECT_ROOT_DIR}/tests/.test_results/")
+        target_compile_definitions(${TEST_SUITE_NAME} PRIVATE "GOOGLETEST_JUNIT_XML_OUTPUT=\"${TEST_XML_DIR}\"")
+    endif()
+
+    # Add coverage if enabled.
+    if(${CFG_TESTS_ENABLE_COVERAGE} STREQUAL "ON")
+        target_link_libraries(${TEST_SUITE_NAME} PRIVATE "gcov")
+        target_compile_options(${TEST_SUITE_NAME} PRIVATE "-ftest-coverage" "-fprofile-arcs")
+    endif()
+
+    # Add generic components.
+    target_sources(${TEST_SUITE_NAME} PRIVATE ${SOURCES_UTILS_ALL})
+    target_include_directories(${TEST_SUITE_NAME} PRIVATE ${INCLUDE_DIRS_UTILS_ALL})
+
+    # Add test suite to CTest.
+    add_test(NAME ${TEST_SUITE_NAME} COMMAND ${TEST_SUITE_NAME})
+endfunction()
+
+## GoogleTest / GoogleMock Test Harness ################################################################################
+add_subdirectory("googletest")
+
+## Tests ###############################################################################################################
+add_subdirectory("tests")
