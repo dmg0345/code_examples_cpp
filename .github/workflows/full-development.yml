@@ -1,7 +1,7 @@
 # Development workflow
 #
 # This workflow triggers whenever there is a push on the 'develop' branch.
-# The 'develop' branch should be configured to restrict direct commits.
+# The 'develop' branch should be configured to restrict direct commits
 
 on: 
   push: 
