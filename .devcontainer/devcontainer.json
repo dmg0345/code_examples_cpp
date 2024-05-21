@@ -17,39 +17,47 @@
             "extensions": [
                 // Find extensions at: https://marketplace.visualstudio.com/vscode
                 // C/C++ related extensions.
-                "ms-vscode.cpptools@1.16.3",
-                "llvm-vs-code-extensions.vscode-clangd@0.1.24",
+                "ms-vscode.cpptools@1.20.5",
+                "llvm-vs-code-extensions.vscode-clangd@0.1.28",
                 "ms-vscode.cpptools-themes@2.0.0",
                 "jeff-hykin.better-cpp-syntax@1.17.2",
-                "ms-vscode.cmake-tools@1.14.34",
-                "josetr.cmake-language-support-vscode@0.0.9",
+                "ms-vscode.cmake-tools@1.17.17",
+                "josetr.cmake-language-suport-vscode@0.0.9",
                 "cschlosser.doxdocgen@1.4.0",
 
                 // Other.
-                "ms-vscode.powershell@2023.6.0",
-                "phil294.git-log--graph@0.1.12",
+                "ms-vscode.powershell@2024.2.2",
+                "phil294.git-log--graph@0.1.15",
                 "github.vscode-github-actions@0.26.2", // Mainly used for validation and intellisense.
-                "trond-snekvik.simple-rst@1.5.3",
-                "lextudio.restructuredtext@189.3.0",
+                "trond-snekvik.simple-rst@1.5.4",
+                "swyddfa.esbonio@0.11.0", // Mainly used for intellisense, does not integrate well with Doxygen.
                 "tamasfe.even-better-toml@0.19.2",
                 "hediet.vscode-drawio@1.6.6",
                 "tomoki1207.pdf@1.2.2",
-                "ms-vscode.live-server@0.4.8"
+                "ms-vscode.live-server@0.4.13"
             ],
 
             // Set the settings.
             "settings": {
-                // Define 'pwsh' profile for Linux enviroments, this ensures the use of PowerShell in terminals.
+                // Define 'pwsh' profile for Linux enviroments, and allow to start terminals in VSCode from it.
                 // Start it with the Python virtual environment already activated.
                 "terminal.integrated.profiles.linux": {
                     "pwsh": {
-                        "path": "pwsh",
+                        "path": "/bin/pwsh",
                         "icon": "terminal-powershell",
                         "args": ["-NoExit", "-Command", "& /usr/venvs/development/bin/Activate.ps1"]
-                    }
+                    },
+                    "sh": {
+                        "path": "/bin/sh"
+                    },
+                    "bash": null,
+                    "JavaScript Debug Terminal": null
                 },
-                // Set the default profile to 'pwsh' in Linux enviroments.
-                "terminal.integrated.defaultProfile.linux": "pwsh"
+                // Set the default profile to 'sh' in Linux enviroments, so that debug and launch work as normal.
+                "terminal.integrated.defaultProfile.linux": "sh",
+                "terminal.integrated.automationProfile.linux": {
+                    "path": "/bin/sh"
+                }
             }
         }
     }

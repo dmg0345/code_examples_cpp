@@ -2,12 +2,14 @@
 #   - clang-tidy-15 --help
 #   - https://releases.llvm.org/15.0.0/tools/clang/tools/extra/docs/clang-tidy/index.html
 #   - https://releases.llvm.org/15.0.0/tools/clang/tools/extra/docs/clang-tidy/checks/list.html
+# Note that certain checks can be time consuming, run with --enable-check-profile for profiling.
 
 Checks: >
   -*,
   bugprone-*,
   -bugprone-easily-swappable-parameters,
   clang-analyzer-*,
+  clang-diagnostic-*,
   cppcoreguidelines-*,
   -cppcoreguidelines-avoid-non-const-global-variables,
   -cppcoreguidelines-interfaces-global-init,
@@ -24,6 +26,7 @@ Checks: >
 WarningsAsErrors: >
   bugprone-*,
   clang-analyzer-*,
+  clang-diagnostic-*,
   cppcoreguidelines-*,
   misc-*,
   portability-*,
