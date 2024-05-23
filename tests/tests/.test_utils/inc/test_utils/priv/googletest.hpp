@@ -1,6 +1,6 @@
 /**
  ***********************************************************************************************************************
- * @file        googletest_defs.hpp
+ * @file        googletest.hpp
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @version     ${PROJECT_VERSION}
@@ -8,8 +8,8 @@
  ***********************************************************************************************************************
  */
 
-#ifndef GOOGLETEST_DEFS_HPP
-#define GOOGLETEST_DEFS_HPP
+#ifndef TEST_UTILS_GOOGLETEST_HPP
+#define TEST_UTILS_GOOGLETEST_HPP
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -17,10 +17,7 @@
 
 using namespace testing;
 
-/**
- * @brief Utilities related to GoogleTest and GoogleMock for testing.
- */
-namespace GoogleTestDefs
+namespace Tests::Utils::GoogleTest
 {
 
 /**
@@ -32,6 +29,6 @@ void init(int argc, char ** argv);
 
 }
 
-#endif /* GOOGLETEST_DEFS_HPP */
+#endif /* TEST_UTILS_GOOGLETEST_HPP */
 
 /******************************************************************************************************END OF FILE*****/

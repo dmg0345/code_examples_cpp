@@ -11,6 +11,11 @@
 #include <iostream>
 #include <vector>
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push // Store current settings.
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+
 namespace CppPrimer::Chapter5
 {
 
@@ -56,5 +61,9 @@ void exercise_5(void)
 }
 
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop // Restore settings.
+#endif
 
 /******************************************************************************************************END OF FILE*****/

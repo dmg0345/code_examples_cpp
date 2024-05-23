@@ -1,6 +1,6 @@
 /**
  ***********************************************************************************************************************
- * @file        version.h
+ * @file        utils.hpp
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @version     ${PROJECT_VERSION}
@@ -8,33 +8,18 @@
  ***********************************************************************************************************************
  */
 
-#ifndef VERSION_H
-#define VERSION_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+/* Define to prevent recursive inclusion -----------------------------------------------------------------------------*/
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 /**
- * @addtogroup version Version component
+ * @brief Utils namespace.
  *
- * Provides versioning information of a build.
- *
- * @{
+ * Different kinds of utilities to be used accross the codebase.
  */
+namespace Utils
+{ }
 
-/** @defgroup version_papi Public API */
-
-#include "version_info.h"
-
-/**
- * @}
- */
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* VERSION_H */
+#endif /* UTILS_HPP */
 
 /******************************************************************************************************END OF FILE*****/

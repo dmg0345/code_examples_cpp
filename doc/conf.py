@@ -15,6 +15,7 @@ its XML output to be at the specified location. Relevant links for documentation
 # type: ignore
 
 import sphinx
+import subprocess
 import os
 import xml.etree.ElementTree as ET
 
@@ -133,6 +134,28 @@ breathe_show_include = False
 # Debug directives.
 breathe_debug_trace_directives = True
 
+## Setup functionality #################################################################################################
+def run_doxygen() -> None:
+    """Runs doxygen as part of the Sphinx workflow, without rebuilding unless necessary."""
+    # Set paths to relevant files.
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    dexe = "doxygen"
+    cdir = os.path.join(root, "doc")
+    cmdir = os.path.join(root, ".cmake_build")
+
+    # Build command, ensuring the Python virtual environmnet is activated.
+    cmd = "pwsh -Command '"
+    cmd += f'& "$ENV:VIRTUAL_ENV_PATH/bin/Activate.ps1";'
+    cmd += f'& "{os.path.join(root, "manage.ps1")}" load;'
+    cmd += f'Start-Doxygen -DoxygenExe "{dexe}" -ConfigFolder "{cdir}" -CMakeBuildDir "{cmdir}" -NoRebuild;'
+    cmd += "'"
+
+    # Run command and check for errors.
+    res = subprocess.run(cmd, shell=True, cwd=root, encoding="utf8", text=True, capture_output=True)
+    print(res.stdout)
+    if res.returncode != 0:
+        raise sphinx.errors.ConfigError(f"Call to Doxygen finished with error '{res.returncode}'...")
+
 def breathe_load_tags_on_doxyfile() -> None:
     """Loads the ENABLED_SECTIONS configuration of the DoxyFile when the XML is generated, and adds it as tags, suitable
     to be used with the @only directive in Sphinx.
@@ -151,16 +174,15 @@ def breathe_load_tags_on_doxyfile() -> None:
     if len(elems) == 1:
         _ = [tags.add(tag.text) for tag in elems[0] if tag.text.isidentifier()]
 
-## Setup functionality #################################################################################################
 def on_missing_reference(_app: sphinx.application.Sphinx,
-                         _env: app.builder.env,
+                         _env: sphinx.app.builder.env,
                          node: sphinx.addnodes.pending_xref,
                          contnode: sphinx.addnodes.pending_xref):
     """Handler for 'on_missing_reference' warning. Lots of false positives can be raised by Sphinx from this, for
     example from missing references to standard library types or missing references to third-party types that are not
     documented by Sphinx or which are not processed by Doxygen.
 
-    One solution is to disable errors as warnings, but this is not convenient as it could 
+    One solution is to disable errors as warnings, but this is not convenient as it could hide real errors.
 
     The implementation of this handler here allows to ignore warnings for the types specified."""
     # Print missing reference in color in the terminal to differentiate it.
@@ -192,6 +214,10 @@ def setup(app: sphinx.application.Sphinx):
 
         - https://www.sphinx-doc.org/en/master/extdev/appapi.html#module-sphinx.application
         - https://www.sphinx-doc.org/en/master/extdev/appapi.html#sphinx-core-events"""
+    # If the 'DOXYGEN_DISABLED' tag was provided, then do not include doxygen in the Sphinx workflow.
+    if "DOXYGEN_DISABLED" not in tags:
+        # Call doxygen to build the XML.
+        run_doxygen()
     # Load relevant tags to the 'tags' object from the Doxyfile.
     breathe_load_tags_on_doxyfile()
     # Register handler for the 'missing-reference' event.

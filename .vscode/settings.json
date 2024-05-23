@@ -93,12 +93,16 @@
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
     // Configure status bar of the extension.
-    "cmake.statusbar.visibility": "default",
-    "cmake.statusbar.advanced": {
+    "cmake.options.statusBarVisibility":"visible",
+    "cmake.options.advanced": {
         // Disable debug icon, use the 'Run and Debug' tab instead.
-        "debug": { "visibility": "hidden"},
-        // Disable ctest icon, use the 'Testing' tab instead.
-        "ctest": {"visibility": "hidden"},
+        "debug": { "statusBarVisibility": "hidden" },
+        // Disable CTest icon, use the 'Testing' tab instead.
+        "ctest": { "statusBarVisibility": "hidden" },
+        // Disable CPack icon.
+        "cpack": { "statusBarVisibility": "hidden" },
+        // Disable Workflow icon.
+        "workflow": { "statusBarVisibility": "hidden" }
     },
     // Ensure the 'compile_commands.json' file is generated.
     "cmake.exportCompileCommandsFile": true,
@@ -136,39 +140,31 @@
     "evenBetterToml.taplo.configFile.enabled": false,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // reStructured Text extension settings
+    // Esbonio extension settings
+    // NOTE: We mainly use this for intellisense, it does not integrate well with Doxygen.
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Run linter on save.
-    "restructuredtext.linter.run": "onSave",
-    // Use sphinx.
-    "restructuredtext.preview.name": "sphinx",
-    // Set doc8 as the restructured text linter.
-    "restructuredtext.linter.rstcheck.executablePath": "",
-    "restructuredtext.linter.rst-lint.executablePath": "",
-    "restructuredtext.linter.doc8.executablePath": "/usr/venvs/development/bin/doc8",
-    // Set doc8 restructured text linter to use the pyproject.toml file for settings.
-    "restructuredtext.linter.doc8.extraArgs": [
-        "--config", "${workspaceFolder}/pyproject.toml"
-    ],
-    // Set styles to no styles.
-    "restructuredtext.styles": [],
-    // Inherit identation settings from Visual Studio Code.
-    "restructuredtext.editor.listEditing.list.indentationSize": "inherit",
-    // Disable Python extension recommendation.
-    "restructuredtext.pythonRecommendation.disabled": true,
     // Enable Esbonio, use Python in the virtual environment.
     "esbonio.server.enabled": true,
+    "esbonio.server.enabledInPyFiles": false,
     "esbonio.server.pythonPath": "/usr/venvs/development/bin/python",
     "esbonio.server.startupModule": "esbonio",
     // Set the the directories for Sphinx and do not force full builds, trigger them explicitly along with Doxygen.
-    "esbonio.sphinx.buildDir": "${workspaceFolder}/doc/.sphinx_build",
     "esbonio.sphinx.confDir": "${workspaceFolder}/doc",
+    "esbonio.sphinx.buildDir": "${workspaceFolder}/doc/.sphinx_build",
+    "esbonio.sphinx.builderName": "html",
     "esbonio.sphinx.forceFullBuild": false,
+    // Do not run Doxygen from this extension and ignore warnings, instead run it from command line prior.
+    "esbonio.sphinx.tags": ["DOXYGEN_DISABLED"],
+    "esbonio.sphinx.warningIsError": false,
+    // Disable updates to the underlying language server from this extension.
+    "esbonio.server.updateBehavior": "promptAlways",
+    "esbonio.server.updateFrequency": "never",
     // Let Sphinx determine the number of jobs to create.
     "esbonio.sphinx.numJobs": 0,
     // Set debug levels.
-    "esbonio.server.logLevel": "error",
-    "restructuredtext.trace": "off",
+    "esbonio.sphinx.verbosity": 0,
+    "esbonio.server.enableDevTools": false,
+    "esbonio.server.logLevel": "debug",
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PowerShell extension settings

@@ -10,24 +10,9 @@ add_subdirectory("chapter_5")
 add_subdirectory("chapter_6")
 add_subdirectory("chapter_7")
 
-## Sources #############################################################################################################
-# Collect sources and add them to target.
-set(SOURCES_CPP_PRIMER
-    ""
-    CACHE INTERNAL ""
-)
-
-## Includes ############################################################################################################
-# Collect include directories.
-set(INCLUDE_DIRS_CPP_PRIMER
-    "${CMAKE_CURRENT_SOURCE_DIR}/inc"
-    CACHE INTERNAL ""
-)
-
 ## All layer sources and include directories ###########################################################################
 # Collect source files of all components.
-set(SOURCES_CPP_PRIMER_ALL
-    ${SOURCES_CPP_PRIMER}
+set(SOURCES_CPP_PRIMER
     ${SOURCES_CPP_PRIMER_THIRD_PARTY}
     ${SOURCES_CPP_PRIMER_CHAPTER_1}
     ${SOURCES_CPP_PRIMER_CHAPTER_2}
@@ -40,8 +25,8 @@ set(SOURCES_CPP_PRIMER_ALL
 )
 
 # Collect include dirs of all components.
-set(INCLUDE_DIRS_CPP_PRIMER_ALL
-    ${INCLUDE_DIRS_CPP_PRIMER}
+set(INCLUDE_DIRS_CPP_PRIMER
+    "${CMAKE_CURRENT_SOURCE_DIR}/inc"
     ${INCLUDE_DIRS_CPP_PRIMER_THIRD_PARTY}
     ${INCLUDE_DIRS_CPP_PRIMER_CHAPTER_1}
     ${INCLUDE_DIRS_CPP_PRIMER_CHAPTER_2}

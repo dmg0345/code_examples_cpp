@@ -13,6 +13,9 @@ structures and algorithms in C++ for exercises found in the following namespaces
 .. doxygennamespace:: CppDSA
     :desc-only:
 
+.. doxygennamespace:: Utils
+    :desc-only:
+
 The source code for |ProjectFriendlyName| is hosted at `Github <https://github.com/dmg0345/code_examples_cpp>`_ and
 related *Docker* images for development containers are located at `DockerHub <https://hub.docker.com/r/dmg00345/code_examples_cpp>`_.
 `Test Results HTML Report <_static/_test_results/test_report.html>`_ and

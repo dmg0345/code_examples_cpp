@@ -6,18 +6,18 @@ function(define_test_suite TEST_SUITE_NAME)
     # Link against GoogleTest and GoogleMock.
     target_link_libraries(${TEST_SUITE_NAME} PRIVATE gtest gmock)
 
-    # Add additional GoogleTest and GoogleMock related functionality to the test suite.
+    # Add additional test utilities.
     target_sources(${TEST_SUITE_NAME} PRIVATE
-        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils/googletest_defs.cpp"
+        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils/googletest.cpp"
+    )
+
+    # Add include directories to the test utilities.
+    target_include_directories(${TEST_SUITE_NAME} PRIVATE
+        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils/inc"
     )
 
     # Set installation runtime directories.
     install(TARGETS ${TEST_SUITE_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_RUNTIMEDIR}")
-
-    # Add include directory to the test utilities.
-    target_include_directories(${TEST_SUITE_NAME} PRIVATE
-        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils"
-    )
 
     # If running on CI, then enable XML output on GoogleTest, otherwise use the default standard output.
     if((DEFINED CFG_CI) AND (${CFG_CI}))
@@ -32,8 +32,8 @@ function(define_test_suite TEST_SUITE_NAME)
     endif()
 
     # Add generic components.
-    target_sources(${TEST_SUITE_NAME} PRIVATE ${SOURCES_UTILS_ALL})
-    target_include_directories(${TEST_SUITE_NAME} PRIVATE ${INCLUDE_DIRS_UTILS_ALL})
+    target_sources(${TEST_SUITE_NAME} PRIVATE ${SOURCES_UTILS})
+    target_include_directories(${TEST_SUITE_NAME} PRIVATE ${INCLUDE_DIRS_UTILS})
 
     # Add test suite to CTest.
     add_test(NAME ${TEST_SUITE_NAME} COMMAND ${TEST_SUITE_NAME})
