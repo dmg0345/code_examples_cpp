@@ -1,6 +1,6 @@
 /**
  ***********************************************************************************************************************
- * @file        version.h
+ * @file        version.hpp
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @version     ${PROJECT_VERSION}
@@ -8,33 +8,20 @@
  ***********************************************************************************************************************
  */
 
-#ifndef VERSION_H
-#define VERSION_H
+/* Define to prevent recursive inclusion -----------------------------------------------------------------------------*/
+#ifndef UTILS_VERSION_HPP
+#define UTILS_VERSION_HPP
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "priv/info.hpp"
 
 /**
- * @addtogroup version Version component
+ * @brief Version namespace.
  *
  * Provides versioning information of a build.
- *
- * @{
  */
+namespace Utils::Version
+{ }
 
-/** @defgroup version_papi Public API */
-
-#include "version_info.h"
-
-/**
- * @}
- */
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* VERSION_H */
+#endif /* UTILS_VERSION_HPP */
 
 /******************************************************************************************************END OF FILE*****/

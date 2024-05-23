@@ -218,8 +218,8 @@ def setup(app: sphinx.application.Sphinx):
     if "DOXYGEN_DISABLED" not in tags:
         # Call doxygen to build the XML.
         run_doxygen()
-        # Load relevant tags to the 'tags' object from the Doxyfile.
-        breathe_load_tags_on_doxyfile()
+    # Load relevant tags to the 'tags' object from the Doxyfile.
+    breathe_load_tags_on_doxyfile()
     # Register handler for the 'missing-reference' event.
     app.connect("missing-reference", on_missing_reference)
     # Print tags just for informational purpopses.

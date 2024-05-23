@@ -145,12 +145,12 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Enable Esbonio, use Python in the virtual environment.
     "esbonio.server.enabled": true,
-    "esbonio.server.enabledInPyFiles": true,
+    "esbonio.server.enabledInPyFiles": false,
     "esbonio.server.pythonPath": "/usr/venvs/development/bin/python",
     "esbonio.server.startupModule": "esbonio",
     // Set the the directories for Sphinx and do not force full builds, trigger them explicitly along with Doxygen.
-    "esbonio.sphinx.buildDir": "${workspaceFolder}/doc/.sphinx_build",
     "esbonio.sphinx.confDir": "${workspaceFolder}/doc",
+    "esbonio.sphinx.buildDir": "${workspaceFolder}/doc/.sphinx_build",
     "esbonio.sphinx.builderName": "html",
     "esbonio.sphinx.forceFullBuild": false,
     // Do not run Doxygen from this extension and ignore warnings, instead run it from command line prior.
@@ -163,8 +163,8 @@
     "esbonio.sphinx.numJobs": 0,
     // Set debug levels.
     "esbonio.sphinx.verbosity": 0,
-    "esbonio.server.enableDevTools": true,
-    "esbonio.server.logLevel": "error",
+    "esbonio.server.enableDevTools": false,
+    "esbonio.server.logLevel": "debug",
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PowerShell extension settings

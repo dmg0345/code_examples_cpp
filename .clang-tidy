@@ -14,6 +14,7 @@ Checks: >
   -cppcoreguidelines-avoid-non-const-global-variables,
   -cppcoreguidelines-interfaces-global-init,
   -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-avoid-goto,
   misc-*,
   portability-*,
   performance-*,

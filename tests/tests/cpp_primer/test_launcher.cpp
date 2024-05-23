@@ -8,15 +8,43 @@
  ***********************************************************************************************************************
  */
 
-#include "googletest_defs.hpp"
+#include "test_utils/test_utils.hpp"
 #include "cpp_primer/cpp_primer.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 
-/*--------------------------------------------------------------------------------------------------------------------*/
-TEST(DISABLED_CppPrimer, Launcher)
+/**
+ * @brief Namespace for the tests of 'CppPrimer'.
+ */
+namespace Tests::CppPrimer
+{
+
+/**
+ * @brief Test suite, instantiated for every test.
+ */
+class CppPrimerTest : public testing::Test
+{
+protected:
+    /**
+     * @brief Setup function, called after the constructor in every test.
+     */
+    void SetUp() override { }
+
+    /**
+     * @brief Teardown function, called before the destructor in every test.
+     */
+    void TearDown() override { }
+};
+
+
+/**
+ * @brief Launcher for the tests.
+ */
+TEST_F(DISABLED_CppPrimerTest, Launcher)
 {
     CppPrimer::Chapter1::exercise_5();
+}
+
 }
 
 // NOLINTEND(cppcoreguidelines-owning-memory)
@@ -28,7 +56,7 @@ TEST(DISABLED_CppPrimer, Launcher)
 int main(int argc, char ** argv)
 {
     // Initialize GoogleTest and GoogleMock.
-    GoogleTestDefs::init(argc, argv);
+    Tests::Utils::GoogleTest::init(argc, argv);
 
     // Execute the test runner.
     return RUN_ALL_TESTS();

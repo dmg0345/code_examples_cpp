@@ -14,7 +14,7 @@ param (
     #    'clang-tidy': Container command, runs 'clang-tidy' project wide.
     #    'cppcheck': Container command, runs 'cppcheck' project wide.
     #    'doc8': Container command, runs 'doc8' project wide.
-    #    'test_report': Container command, runs 'junit2html' from a log file with 'CMocka' XML output project wide.
+    #    'test_report': Container command, runs 'junit2html' generating a HTML test report from the last test execution.
     #    'coverage': Container command, runs 'fastcov' and 'lcov' project wide.
     #    'docs': Container command, runs 'doxygen' and 'sphinx' project wide.
     [Parameter(Mandatory = $true)]
@@ -137,7 +137,7 @@ if (-not (Test-Path "~/.ssh/known_hosts")) { New-Item -Path "~/.ssh/known_hosts"
 Set-Content -Path "~/.ssh/known_hosts" -Value "$(ssh-keyscan github.com)" -Force;
 
 # Clone repository in the workspace folder.
-git clone --recurse-submodules --branch master "git@github.com:dmg0345/code_examples_cpp.git" ".";
+git clone --recurse-submodules --branch develop "git@github.com:dmg0345/code_examples_cpp.git" ".";
 if ($LASTEXITCODE -ne 0) { throw "Failed to clone repository." }
 '@;
 
@@ -207,7 +207,7 @@ elseif ($Command -eq "coverage")
 elseif ($Command -eq "docs")
 {
     Start-DoxygenSphinx -DoxygenExe "doxygen" -SphinxBuildExe "sphinx-build" -ConfigFolder "doc" `
-        -CMakeBuildDir ".cmake_build" -HTMLOutput "doc/.output/html";
+        -CMakeBuildDir ".cmake_build" -HTMLOutput "doc/.output";
 }
 else
 {

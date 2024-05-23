@@ -15,6 +15,11 @@
         <id>*</id>
         <fileName>*tests/googletest/*</fileName>
     </suppress>
+    <!-- Supress every rule in tests, as it will fail to parse some GoogleTest structures. -->
+    <suppress>
+        <id>*</id>
+        <fileName>*tests/tests/*</fileName>
+    </suppress>
     <!-- ################################### Suppressed Files ################################### -->
 
     <!-- ################################### Suppressed Rules ################################### -->
@@ -34,6 +39,16 @@
     <!-- Suppress variable scope rule. -->
     <suppress>
         <id>variableScope</id>
+        <fileName>*</fileName>
+    </suppress>
+    <!-- Suppress redundant initializations of variables, can conflict with other linters. -->
+    <suppress>
+        <id>redundantInitialization</id>
+        <fileName>*</fileName>
+    </suppress>
+    <!-- Suppress unused functions. -->
+    <suppress>
+        <id>unusedFunction</id>
         <fileName>*</fileName>
     </suppress>
 </suppressions>
