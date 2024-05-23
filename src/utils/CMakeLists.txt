@@ -10,6 +10,7 @@ set(SOURCES_UTILS
 
 # Collect include dirs of all components.
 set(INCLUDE_DIRS_UTILS
+    "${CMAKE_CURRENT_SOURCE_DIR}/inc"
     ${INCLUDE_DIRS_UTILS_VERSION}
     CACHE INTERNAL ""
 )

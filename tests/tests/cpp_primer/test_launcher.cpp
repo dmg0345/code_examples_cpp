@@ -36,13 +36,12 @@ protected:
     void TearDown() override { }
 };
 
-
 /**
  * @brief Launcher for the tests.
  */
-TEST_F(DISABLED_CppPrimerTest, Launcher)
+TEST_F(CppPrimerTest, DISABLED_Launcher)
 {
-    CppPrimer::Chapter1::exercise_5();
+    ::CppPrimer::Chapter1::exercise_5();
 }
 
 }
