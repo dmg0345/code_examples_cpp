@@ -22,7 +22,7 @@
                 "ms-vscode.cpptools-themes@2.0.0",
                 "jeff-hykin.better-cpp-syntax@1.17.2",
                 "ms-vscode.cmake-tools@1.17.17",
-                "josetr.cmake-language-suport-vscode@0.0.9",
+                "josetr.cmake-language-support-vscode@0.0.9",
                 "cschlosser.doxdocgen@1.4.0",
 
                 // Other.

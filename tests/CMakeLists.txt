@@ -8,6 +8,7 @@ function(define_test_suite TEST_SUITE_NAME)
 
     # Add additional test utilities.
     target_sources(${TEST_SUITE_NAME} PRIVATE
+        "${PROJECT_ROOT_DIR}/tests/tests/.test_utils/test_utils.cpp"
         "${PROJECT_ROOT_DIR}/tests/tests/.test_utils/googletest.cpp"
     )
 
@@ -23,6 +24,17 @@ function(define_test_suite TEST_SUITE_NAME)
     if((DEFINED CFG_CI) AND (${CFG_CI}))
         set(TEST_XML_DIR "${PROJECT_ROOT_DIR}/tests/.test_results/")
         target_compile_definitions(${TEST_SUITE_NAME} PRIVATE "GOOGLETEST_JUNIT_XML_OUTPUT=\"${TEST_XML_DIR}\"")
+    endif()
+
+    # Add sanitizers to the compiled tests.
+    #   - fsanitize=leak: LeakSanitizer, a memory leak detector.
+    #   - fsanitize=address: AddressSanitizer, a fast memory error detector.
+    #   - fsanitize=undefined: UndefinedBehaviorSanitizer, a fast undefined behavior detector.
+    # Refer to https://stackoverflow.com/a/50163972 for details on the implementation.
+    if(${CFG_TESTS_ENABLE_SANITIZERS} STREQUAL "ON")
+        set(TEST_SAN_FLAGS "-fsanitize=leak,address,undefined")
+        target_compile_options(${TEST_SUITE_NAME} PRIVATE ${TEST_SAN_FLAGS})
+        target_link_libraries(${TEST_SUITE_NAME} PRIVATE ${TEST_SAN_FLAGS})
     endif()
 
     # Add coverage if enabled.

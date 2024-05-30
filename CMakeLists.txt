@@ -45,8 +45,12 @@ set(CFG_TAG "OFF" CACHE STRING "Tags the C/C++ source and header files, defaults
 set_property(CACHE CFG_TAG PROPERTY STRINGS "OFF" "FILENAMES_ONLY" "ON")
 
 # Adds coverage to the tests.
-set(CFG_TESTS_ENABLE_COVERAGE "OFF" CACHE STRING "Adds coverage to the off-target tests, defaults to 'OFF'.")
+set(CFG_TESTS_ENABLE_COVERAGE "OFF" CACHE STRING "Adds coverage to the tests, defaults to 'OFF'.")
 set_property(CACHE CFG_TESTS_ENABLE_COVERAGE PROPERTY STRINGS "OFF" "ON")
+
+# Adds sanitizers to the tests.
+set(CFG_TESTS_ENABLE_SANITIZERS "OFF" CACHE STRING "Adds sanitizers to the tests, defaults to 'OFF'.")
+set_property(CACHE CFG_TESTS_ENABLE_SANITIZERS PROPERTY STRINGS "OFF" "ON")
 
 # Other project configuration variables:
 #
@@ -66,6 +70,7 @@ message(STATUS "CMAKE_GENERATOR: '${CMAKE_GENERATOR}'")
 message(STATUS "CMAKE_TOOLCHAIN_FILE: '${CMAKE_TOOLCHAIN_FILE}'")
 message(STATUS "CFG_TAG: '${CFG_TAG}'")
 message(STATUS "CFG_TESTS_ENABLE_COVERAGE: '${CFG_TESTS_ENABLE_COVERAGE}'")
+message(STATUS "CFG_TESTS_ENABLE_SANITIZERS: '${CFG_TESTS_ENABLE_SANITIZERS}'")
 message(STATUS "CFG_CI: '${CFG_CI}'")
 message(STATUS "BUILD_TESTING: '${BUILD_TESTING}'")
 message(STATUS "CMAKE_VERBOSE_MAKEFILE: '${CMAKE_VERBOSE_MAKEFILE}'")
@@ -73,9 +78,13 @@ message(STATUS "#########################################################")
 
 # Perform sanity check on testing related variables:
 #  - Coverage can only be enabled when the tests are built.
+#  - Sanitizers can only be enabled when tests are built.
 if(NOT ${BUILD_TESTING})
     if ((${CFG_TESTS_ENABLE_COVERAGE} STREQUAL "ON"))
         message(FATAL_ERROR "If CFG_TESTS_ENABLE_COVERAGE is 'ON' BUILD_TESTING needs to be 'ON'.")
+    endif()
+    if ((${CFG_TESTS_ENABLE_SANITIZERS} STREQUAL "ON"))
+        message(FATAL_ERROR "If CFG_TESTS_ENABLE_SANITIZERS is 'ON' BUILD_TESTING needs to be 'ON'.")
     endif()
 endif()
 

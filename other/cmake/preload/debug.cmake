@@ -9,6 +9,7 @@
 ## Configuration variables #############################################################################################
 set(CFG_TAG "OFF" CACHE STRING "" FORCE)
 set(CFG_TESTS_ENABLE_COVERAGE "ON" CACHE STRING "" FORCE)
+set(CFG_TESTS_ENABLE_SANITIZERS "ON" CACHE STRING "" FORCE)
 set(CFG_CI "OFF" CACHE STRING "" FORCE)
 set(BUILD_TESTING TRUE CACHE BOOL "" FORCE)
 

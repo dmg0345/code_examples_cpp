@@ -197,9 +197,13 @@ def on_missing_reference(_app: sphinx.application.Sphinx,
     # C Standard library identifiers to ignore.
     c_std_reftargets = []
 
+    # C++ Standard library identifiers to ignore.
+    cpp_std_reftargets = ["size_t"]
+
     # Build total reftargets.
     reftargets = [
         *c_std_reftargets,
+        *cpp_std_reftargets
     ]
 
     # Check if the reference is of C/C++ type and it can be allowed to be missing.
