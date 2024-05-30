@@ -64,4 +64,4 @@ License
     :titlesonly:
     :hidden:
 
-    cpp_dsa/index
+    cpp_dsa/linked_list/index
