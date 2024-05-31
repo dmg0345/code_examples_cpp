@@ -55,6 +55,29 @@ public:
      */
     Singly<T>() : Base::LinkedListBase<T>(), head(nullptr), tail(nullptr) { }
 
+    Singly<T>(const Singly<T> & list) = delete;
+
+    Singly<T> & operator=(const Singly<T> list) = delete;
+
+    Singly<T>(Singly<T> && list) noexcept = delete;
+
+    Singly<T> & operator=(Singly<T> && list) noexcept = delete;
+
+    ~Singly<T>()
+    {
+        // Loop all nodes, if any, and erase them.
+        Node<T> * node = head;
+        while (node != nullptr)
+        {
+            // Get next node.
+            Node<T> * tmp = node->next;
+            // Delete node.
+            delete node;
+            // Update node for next run.
+            node = tmp;
+        }
+    }
+
     T & append(const T & data) override
     {
         // Create new node to append.

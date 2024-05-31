@@ -127,7 +127,7 @@ public:
     /**
      * @brief Destructor.
      */
-    ~Log() { this->log("Destructor."); }
+    ~Log() { log("Destructor."); }
 
     /**
      * @brief Gets the instance number.

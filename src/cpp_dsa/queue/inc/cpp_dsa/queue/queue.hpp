@@ -1,6 +1,6 @@
 /**
  ***********************************************************************************************************************
- * @file        cpp_dsa.hpp
+ * @file        queue.hpp
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @version     ${PROJECT_VERSION}
@@ -8,24 +8,38 @@
  ***********************************************************************************************************************
  */
 
-#ifndef CPP_DSA_HPP
-#define CPP_DSA_HPP
+#ifndef CPP_DSA_QUEUE_HPP
+#define CPP_DSA_QUEUE_HPP
 
-#include "cpp_dsa/linked_list/linked_list.hpp"
-#include "cpp_dsa/stack/stack.hpp"
-#include "cpp_dsa/queue/queue.hpp"
+#include "priv/list.hpp"
 
 /**
- * @brief C++ Data Structures and Algorithms namespace
+ * @brief C++ queue namespace
  * @rst
- * The resources relevant for this namespace are listed below:
- *
- *   - `C++ Data Structures & Algorithms, 03-2024, by Scott Barrett <https://www.udemy.com/course/data-structures-algorithms-cpp>`_
+ * Implements a queue based on `std::list`.
  * @endrst
  */
-namespace CppDSA
+namespace CppDSA::Queue
 { }
 
-#endif /* CPP_DSA_HPP */
+/**
+ * @brief C++ queue base namespace
+ * @rst
+ * Base and common items for queues.
+ * @endrst
+ */
+namespace CppDSA::Queue::Base
+{ }
+
+/**
+ * @brief C++ queue linked list namespace
+ * @rst
+ * Queue with `std::list` implementation.
+ * @endrst
+ */
+namespace CppDSA::Queue::List
+{ }
+
+#endif /* CPP_DSA_QUEUE_HPP */
 
 /******************************************************************************************************END OF FILE*****/
