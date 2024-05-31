@@ -74,7 +74,7 @@ public:
     LinkedListBase<T> & operator=(LinkedListBase<T> && list) noexcept = delete;
 
     /**
-     * @brief Virtual destructor.
+     * @brief Destructor.
      */
     virtual ~LinkedListBase() { }
 

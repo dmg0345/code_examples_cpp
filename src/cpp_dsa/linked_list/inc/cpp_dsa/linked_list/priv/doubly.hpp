@@ -58,6 +58,29 @@ public:
      */
     Doubly<T>() : Base::LinkedListBase<T>(), head(nullptr), tail(nullptr) { }
 
+    Doubly<T>(const Doubly<T> & list) = delete;
+
+    Doubly<T> & operator=(const Doubly<T> list) = delete;
+
+    Doubly<T>(Doubly<T> && list) noexcept = delete;
+
+    Doubly<T> & operator=(Doubly<T> && list) noexcept = delete;
+
+    ~Doubly<T>()
+    {
+        // Loop all nodes, if any, and erase them.
+        Node<T> * node = head;
+        while (node != nullptr)
+        {
+            // Get next node.
+            Node<T> * tmp = node->next;
+            // Delete node.
+            delete node;
+            // Update node for next run.
+            node = tmp;
+        }
+    }
+
     T & append(const T & data) override
     {
         // Create new node to append.
