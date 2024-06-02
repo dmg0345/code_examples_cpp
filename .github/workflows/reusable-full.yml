@@ -141,7 +141,7 @@ jobs:
             Rename-Item -Path "$($cfg.Name)" -NewName "$ENV:CLONE_FOLDER" -Force;
           }
       - name: Upload tarred ${{ github.sha }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.sha }}
           path: '*.repo.tar.gz'
@@ -155,7 +155,7 @@ jobs:
         image: ${{ inputs.docker_base_image }}
     steps:
       - name: Download tarred ${{ github.sha }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.sha }}
       - name: Run 'clang-tidy'
@@ -184,7 +184,7 @@ jobs:
         image: ${{ inputs.docker_base_image }}
     steps:
       - name: Download tarred ${{ github.sha }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.sha }}
       - name: Run 'clang-format'
@@ -213,7 +213,7 @@ jobs:
         image: ${{ inputs.docker_base_image }}
     steps:
       - name: Download tarred ${{ github.sha }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.sha }}
       - name: Run 'cppcheck'
@@ -235,7 +235,7 @@ jobs:
           }
       - name: Upload HTML report with errors
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CppCheck HTML report
           path: "**/${{ env.CPPCHECK_HTML_FOLDER }}"
@@ -249,7 +249,7 @@ jobs:
         image: ${{ inputs.docker_base_image }}
     steps:
       - name: Download tarred ${{ github.sha }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.sha }}
       - name: Run 'doc8'
@@ -278,7 +278,7 @@ jobs:
         image: ${{ inputs.docker_base_image }}
     steps:
       - name: Download tarred ${{ github.sha }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.sha }}
       - name: Run tests with 'ctest' and generate HTML test results and coverage reports
@@ -292,8 +292,14 @@ jobs:
             if ($LastExitCode -ne 0) { throw "Decompressing $cfg failed with error '$LastExitCode'." }
             Push-Location "$cfg";
 
-            # Run tests and generate reports.
+            # Run tests, if the tests finish in error, then raise it.
             ctest --extra-verbose --output-log "$ENV:TESTS_HTML_FOLDER/output.log" --no-tests=error --test-dir "$ENV:CMAKE_FOLDER";
+            if ($LastExitCode -ne 0)
+            {
+                throw "The execution of the tests for '$cfg' finished with error '$LastExitCode'.";
+            }
+
+            # Generate test and coverage HTML reports.
             & "./manage.ps1" test_report;
             if ($cfg -in @("Debug"))
             {
@@ -304,13 +310,13 @@ jobs:
             Pop-Location;
           }
       - name: Upload HTML reports with test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Test results HTML reports
           path: "**/${{ env.TESTS_HTML_FOLDER }}"
           if-no-files-found: error
       - name: Upload HTML reports with coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Coverage HTML reports
           path: "**/${{ env.COVERAGE_HTML_FOLDER }}"
@@ -324,7 +330,7 @@ jobs:
         image: ${{ inputs.docker_base_image }}
     steps:
       - name: Download tarred ${{ github.sha }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.sha }}
       - name: Generate HTML documentation
@@ -345,7 +351,7 @@ jobs:
             Pop-Location;
           }
       - name: Upload HTML documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: HTML documentation
           path: "**/Release/${{ env.DOCS_HTML_FOLDER }}" # Only take the documentation for the Release configuration.
@@ -358,17 +364,17 @@ jobs:
     if: ${{ inputs.deploy != 'none' }}
     steps:
       - name: Download HTML documentation
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: HTML documentation
           path: html_docs
       - name: Download test results HTML reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Test results HTML reports
           path: html_test_results
       - name: Download coverage HTML reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Coverage HTML reports
           path: html_coverage_reports
@@ -390,7 +396,7 @@ jobs:
           Get-ChildItem -Path "$srcCoverageReports" -Recurse | Move-Item -Destination "$destCoverageReports";
           Get-ChildItem -Path "$srcTestResultReports" -Recurse | Move-Item -Destination "$destTestResultReports";
       - name: Deploy to Netlify environment
-        uses: nwtgck/actions-netlify@v2.1.0
+        uses: nwtgck/actions-netlify@v3
         with:
           publish-dir: html_docs/Release/${{ env.DOCS_HTML_FOLDER }}
           production-deploy: ${{ inputs.deploy == 'production' }}

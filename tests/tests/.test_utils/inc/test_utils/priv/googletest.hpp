@@ -1,15 +1,15 @@
 /**
  ***********************************************************************************************************************
- * @file        googletest_defs.hpp
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION}
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @file        googletest.hpp
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        02-06-2024 00:31:19 (UTC)
+ * @version     1.0.1
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 
-#ifndef GOOGLETEST_DEFS_HPP
-#define GOOGLETEST_DEFS_HPP
+#ifndef TEST_UTILS_GOOGLETEST_HPP
+#define TEST_UTILS_GOOGLETEST_HPP
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -17,10 +17,7 @@
 
 using namespace testing;
 
-/**
- * @brief Utilities related to GoogleTest and GoogleMock for testing.
- */
-namespace GoogleTestDefs
+namespace Tests::Utils::GoogleTest
 {
 
 /**
@@ -32,6 +29,6 @@ void init(int argc, char ** argv);
 
 }
 
-#endif /* GOOGLETEST_DEFS_HPP */
+#endif /* TEST_UTILS_GOOGLETEST_HPP */
 
 /******************************************************************************************************END OF FILE*****/

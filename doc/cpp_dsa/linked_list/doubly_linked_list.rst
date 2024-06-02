@@ -1,2 +1,6 @@
-C++ Data Structures and Algorithms
+Doubly Linked List
 ========================================================================================================================
+
+.. doxygennamespace:: CppDSA::LinkedList::Doubly
+    :protected-members:
+    :members:

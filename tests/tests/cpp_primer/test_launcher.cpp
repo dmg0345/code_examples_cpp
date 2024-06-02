@@ -1,22 +1,49 @@
 /**
  ***********************************************************************************************************************
  * @file        test_launcher.cpp
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION}
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        02-06-2024 00:31:19 (UTC)
+ * @version     1.0.1
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 
-#include "googletest_defs.hpp"
+#include "test_utils/test_utils.hpp"
 #include "cpp_primer/cpp_primer.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 
-/*--------------------------------------------------------------------------------------------------------------------*/
-TEST(DISABLED_CppPrimer, Launcher)
+/**
+ * @brief Namespace for the tests of 'CppPrimer'.
+ */
+namespace Tests::CppPrimer
 {
-    CppPrimer::Chapter1::exercise_5();
+
+/**
+ * @brief Test suite, instantiated for every test.
+ */
+class CppPrimerTest : public testing::Test
+{
+protected:
+    /**
+     * @brief Setup function, called after the constructor in every test.
+     */
+    void SetUp() override { }
+
+    /**
+     * @brief Teardown function, called before the destructor in every test.
+     */
+    void TearDown() override { }
+};
+
+/**
+ * @brief Launcher for the tests.
+ */
+TEST_F(CppPrimerTest, DISABLED_Launcher)
+{
+    ::CppPrimer::Chapter1::exercise_5();
+}
+
 }
 
 // NOLINTEND(cppcoreguidelines-owning-memory)
@@ -28,7 +55,7 @@ TEST(DISABLED_CppPrimer, Launcher)
 int main(int argc, char ** argv)
 {
     // Initialize GoogleTest and GoogleMock.
-    GoogleTestDefs::init(argc, argv);
+    Tests::Utils::GoogleTest::init(argc, argv);
 
     // Execute the test runner.
     return RUN_ALL_TESTS();

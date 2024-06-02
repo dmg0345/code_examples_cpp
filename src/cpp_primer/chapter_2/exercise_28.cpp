@@ -1,10 +1,10 @@
 /**
  ***********************************************************************************************************************
  * @file        exercise_28.cpp
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION}
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        02-06-2024 00:31:19 (UTC)
+ * @version     1.0.1
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 

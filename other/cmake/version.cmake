@@ -10,7 +10,7 @@ set(PROJECT_DESCRIPTION "Code examples, data structures and algorithms in C++")
 set(PROJECT_COPYRIGHT "github.com/dmg0345/bde/blob/master/LICENSE")
 set(PROJECT_VERSION_MAJOR "1")
 set(PROJECT_VERSION_MINOR "0")
-set(PROJECT_VERSION_PATCH "0")
+set(PROJECT_VERSION_PATCH "1")
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 string(TIMESTAMP PROJECT_BUILD_TIMESTAMP_UTC "%d-%m-%Y %H:%M:%S (UTC)" UTC)
 
@@ -57,7 +57,7 @@ endif()
 # Create versioning file contents.
 set(VERSION_INFO "/**
  ***********************************************************************************************************************
- * @file        version_info.h
+ * @file        info.hpp
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @version     ${PROJECT_VERSION}
@@ -68,103 +68,95 @@ set(VERSION_INFO "/**
 // clang-format off
 // THIS FILE IS AUTO-GENERATED, IF MODIFIED, CHANGES WILL BE OVERWRITTEN.
 
-#ifndef VERSION_INFO_H
-#define VERSION_INFO_H
+#ifndef UTILS_VERSION_INFO_HPP
+#define UTILS_VERSION_INFO_HPP
 
-#ifdef __cplusplus
-extern \"C\" {
-#endif
+namespace Utils::Version
+{
 
 /**
- * @addtogroup version_papi
- * @{
- */
-
-/** 
  * @rst
  * ${PROJECT_AUTHOR}
  * @endrst
  */
-#define ${PROJECT_NAME}_AUTHOR \"${PROJECT_AUTHOR}\"
+constexpr const char * const AUTHOR = \"${PROJECT_AUTHOR}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_CONTACT}
  * @endrst
  */
-#define ${PROJECT_NAME}_CONTACT \"${PROJECT_CONTACT}\"
+constexpr const char * const CONTACT = \"${PROJECT_CONTACT}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_URL}
  * @endrst
  */
-#define ${PROJECT_NAME}_URL \"${PROJECT_URL}\"
+constexpr const char * const URL = \"${PROJECT_URL}\";
 
-/** 
+/**
  * @rst
  * ${CMAKE_BUILD_TYPE}
  * @endrst
  */
-#define ${PROJECT_NAME}_BUILD \"${CMAKE_BUILD_TYPE}\"
+constexpr const char * const BUILD = \"${CMAKE_BUILD_TYPE}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_DESCRIPTION}
  * @endrst
  */
-#define ${PROJECT_NAME}_DESCRIPTION \"${PROJECT_DESCRIPTION}\"
+constexpr const char * const DESCRIPTION = \"${PROJECT_DESCRIPTION}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_VERSION}
  * @endrst
  */
-#define ${PROJECT_NAME}_VERSION \"${PROJECT_VERSION}\"
+constexpr const char * const VERSION = \"${PROJECT_VERSION}\";
 
 /**
- * @}
- */
-
-/** 
  * @rst
  * ${PROJECT_VCS_HASH}
  * @endrst
  * @note The hash is enclosed in @e +++ characters if the project was built with uncommited changes.
+ * @private
  */
-#define ${PROJECT_NAME}_COMMIT_HASH \"${PROJECT_VCS_HASH}\"
+constexpr const char * const COMMIT_HASH = \"${PROJECT_VCS_HASH}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_VCS_TAG}
  * @endrst
+ * @private
  */
-#define ${PROJECT_NAME}_TAG \"${PROJECT_VCS_TAG}\"
+constexpr const char * const TAG = \"${PROJECT_VCS_TAG}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_VCS_BRANCH}
  * @endrst
+ * @private
  */
-#define ${PROJECT_NAME}_BRANCH \"${PROJECT_VCS_BRANCH}\"
+constexpr const char * const BRANCH = \"${PROJECT_VCS_BRANCH}\";
 
-/** 
+/**
  * @rst
  * ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @endrst
+ * @private
  */
-#define ${PROJECT_NAME}_BUILD_TIMESTAMP_UTC \"${PROJECT_BUILD_TIMESTAMP_UTC}\"
+constexpr const char * const BUILD_TIMESTAMP_UTC = \"${PROJECT_BUILD_TIMESTAMP_UTC}\";
 
-#ifdef __cplusplus
 }
-#endif /* __cplusplus */
 
-#endif /* VERSION_INFO_H */
+#endif /* UTILS_VERSION_INFO_HPP */
 
 /******************************************************************************************************END OF FILE*****/")
 
 # Store version contents to file.
-set(PROJECT_VERSION_FILE_LOCATION "${PROJECT_ROOT_DIR}/src/utils/version/inc/utils/version/version_info.h")
+set(PROJECT_VERSION_FILE_LOCATION "${PROJECT_ROOT_DIR}/src/utils/version/inc/utils/version/priv/info.hpp")
 message(STATUS "Storing project version file list at '${PROJECT_VERSION_FILE_LOCATION}'...")
 file(WRITE "${PROJECT_VERSION_FILE_LOCATION}" "${VERSION_INFO}")
 configure_file("${PROJECT_VERSION_FILE_LOCATION}" "${PROJECT_VERSION_FILE_LOCATION}")

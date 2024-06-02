@@ -14,11 +14,11 @@
 /other/cppcheck/.build
 /other/cppcheck/.report
 # Ignore Doxygen, Sphinx and related documentation files.
-/doc/.sphinx_build
 /doc/.doxygen_build
+/doc/.sphinx_build
 /doc/.output
 # Ignore distributables.
 dist
 
 # Ignore version file.
-/src/utils/version/inc/utils/version/version_info.h
+/src/utils/version/inc/utils/version/priv/info.hpp

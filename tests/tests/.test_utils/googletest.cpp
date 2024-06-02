@@ -1,19 +1,18 @@
 /**
  ***********************************************************************************************************************
- * @file        googletest_defs.cpp
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION}
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @file        googletest.cpp
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        02-06-2024 00:31:19 (UTC)
+ * @version     1.0.1
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 
-#include "googletest_defs.hpp"
+#include "test_utils/test_utils.hpp"
 
-namespace GoogleTestDefs
+namespace Tests::Utils::GoogleTest
 {
 
-/*--------------------------------------------------------------------------------------------------------------------*/
 void init(int argc, char ** argv)
 {
 #if defined(GOOGLETEST_JUNIT_XML_OUTPUT)

@@ -1,15 +1,20 @@
 /**
  ***********************************************************************************************************************
  * @file        exercise_5.cpp
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION}
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        02-06-2024 00:31:19 (UTC)
+ * @version     1.0.1
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 
 #include <iostream>
 #include <vector>
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push // Store current settings.
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
 
 namespace CppPrimer::Chapter5
 {
@@ -56,5 +61,9 @@ void exercise_5(void)
 }
 
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop // Restore settings.
+#endif
 
 /******************************************************************************************************END OF FILE*****/

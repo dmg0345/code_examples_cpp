@@ -1,15 +1,19 @@
 /**
  ***********************************************************************************************************************
  * @file        cpp_dsa.hpp
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION}
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        02-06-2024 00:31:19 (UTC)
+ * @version     1.0.1
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 
 #ifndef CPP_DSA_HPP
 #define CPP_DSA_HPP
+
+#include "cpp_dsa/linked_list/linked_list.hpp"
+#include "cpp_dsa/stack/stack.hpp"
+#include "cpp_dsa/queue/queue.hpp"
 
 /**
  * @brief C++ Data Structures and Algorithms namespace

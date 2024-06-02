@@ -4,10 +4,10 @@
 
 # Collect all '.c', '.cpp', '.h' and '.hpp' files from relevant folders for tagging.
 file(GLOB_RECURSE PROJECT_SOURCE_FILES
-    "${PROJECT_ROOT_DIR}/src/*.c"
-    "${PROJECT_ROOT_DIR}/src/*.h"
-    "${PROJECT_ROOT_DIR}/tests/tests/*.c"
-    "${PROJECT_ROOT_DIR}/tests/tests/*.h"
+    "${PROJECT_ROOT_DIR}/src/*.cpp"
+    "${PROJECT_ROOT_DIR}/src/*.hpp"
+    "${PROJECT_ROOT_DIR}/tests/tests/*.cpp"
+    "${PROJECT_ROOT_DIR}/tests/tests/*.hpp"
 )
 
 # Check if tagging filenames only.
