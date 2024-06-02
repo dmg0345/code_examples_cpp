@@ -37,6 +37,12 @@ public:
      */
     Node(const T & data, Node<T> * const next) : Base::NodeBase<T>(data), next(next) { }
 
+    Node<T>(const Node<T> & node) = default;
+    Node<T> & operator=(const Node<T> & node) = default;
+    Node<T>(Node<T> && node) noexcept = default;
+    Node<T> & operator=(Node<T> && node) noexcept = default;
+    ~Node<T>() = default;
+
     Node<T> * next; /**< The next node in the list, or @c nullptr if last node. */
 };
 
@@ -56,11 +62,8 @@ public:
     Singly<T>() : Base::LinkedListBase<T>(), head(nullptr), tail(nullptr) { }
 
     Singly<T>(const Singly<T> & list) = delete;
-
-    Singly<T> & operator=(const Singly<T> list) = delete;
-
+    Singly<T> & operator=(const Singly<T> & list) = delete;
     Singly<T>(Singly<T> && list) noexcept = delete;
-
     Singly<T> & operator=(Singly<T> && list) noexcept = delete;
 
     ~Singly<T>()

@@ -29,7 +29,38 @@ public:
      * @brief Constructs a new node.
      * @param[in] data The data for the node.
      */
-    NodeBase(const T & data) : data(data) { }
+    NodeBase<T>(const T & data) : data(data) { }
+
+    /**
+     * @brief Default copy constructor.
+     * @param[in] node The node to copy.
+     */
+    NodeBase<T>(const NodeBase<T> & node) = default;
+
+    /**
+     * @brief Default copy operator.
+     * @param[in] node The node to copy.
+     * @return The copied node.
+     */
+    NodeBase<T> & operator=(const NodeBase<T> & node) = default;
+
+    /**
+     * @brief Default move constructor.
+     * @param[in] node The node to move.
+     */
+    NodeBase<T>(NodeBase<T> && node) noexcept = default;
+
+    /**
+     * @brief Default move operator.
+     * @param[in] node The node to move.
+     * @return The moved node.
+     */
+    NodeBase<T> & operator=(NodeBase<T> && node) noexcept = default;
+
+    /**
+     * @brief Destructor.
+     */
+    virtual ~NodeBase<T>() { }
 
     T data; /**< The data in the node. */
 };
@@ -58,7 +89,7 @@ public:
      * @param[in] stack The stack to copy.
      * @return The copied stack.
      */
-    StackBase<T> & operator=(const StackBase<T> stack) = delete;
+    StackBase<T> & operator=(const StackBase<T> & stack) = delete;
 
     /**
      * @brief Deleted move constructor.
@@ -76,7 +107,7 @@ public:
     /**
      * @brief Destructor.
      */
-    virtual ~StackBase() { }
+    virtual ~StackBase<T>() { }
 
     /**
      * @brief Pushes a new node to the top of the stack.

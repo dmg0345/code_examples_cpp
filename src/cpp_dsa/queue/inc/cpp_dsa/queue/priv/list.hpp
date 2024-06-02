@@ -30,6 +30,12 @@ class Node : public Base::NodeBase<T>
 {
 public:
     using Base::NodeBase<T>::NodeBase;
+
+    Node<T>(const Node<T> & node) = default;
+    Node<T> & operator=(const Node<T> & node) = default;
+    Node<T>(Node<T> && node) noexcept = default;
+    Node<T> & operator=(Node<T> && node) noexcept = default;
+    ~Node<T>() = default;
 };
 
 }
@@ -48,10 +54,10 @@ public:
     Queue<T>() : Base::QueueBase<T>() { }
 
     Queue<T>(const Queue<T> & queue) = delete;
-    Queue<T> & operator=(const Queue<T> queue) = delete;
+    Queue<T> & operator=(const Queue<T> & queue) = delete;
     Queue<T>(Queue<T> && queue) noexcept = delete;
     Queue<T> & operator=(Queue<T> && queue) noexcept = delete;
-    ~Queue() = default;
+    ~Queue<T>() = default;
 
     T & enqueue(const T & data) override
     {

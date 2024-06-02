@@ -39,6 +39,12 @@ public:
     Node(const T & data, Node<T> * const next, Node<T> * const prev) : Base::NodeBase<T>(data), next(next), prev(prev)
     { }
 
+    Node<T>(const Node<T> & node) = default;
+    Node<T> & operator=(const Node<T> & node) = default;
+    Node<T>(Node<T> && node) noexcept = default;
+    Node<T> & operator=(Node<T> && node) noexcept = default;
+    ~Node<T>() = default;
+
     Node<T> * next; /**< The next node in the list, or @c nullptr if last node. */
     Node<T> * prev; /**< The previous node in the list, or @c nullptr if last node. */
 };
@@ -59,11 +65,8 @@ public:
     Doubly<T>() : Base::LinkedListBase<T>(), head(nullptr), tail(nullptr) { }
 
     Doubly<T>(const Doubly<T> & list) = delete;
-
-    Doubly<T> & operator=(const Doubly<T> list) = delete;
-
+    Doubly<T> & operator=(const Doubly<T> & list) = delete;
     Doubly<T>(Doubly<T> && list) noexcept = delete;
-
     Doubly<T> & operator=(Doubly<T> && list) noexcept = delete;
 
     ~Doubly<T>()
