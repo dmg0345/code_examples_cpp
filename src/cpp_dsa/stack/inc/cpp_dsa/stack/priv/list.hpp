@@ -18,7 +18,7 @@
 namespace CppDSA::Stack::List
 {
 
-namespace
+namespace Detail
 {
 
 /**
@@ -35,7 +35,7 @@ public:
     Node<T> & operator=(const Node<T> & node) = default;
     Node<T>(Node<T> && node) noexcept = default;
     Node<T> & operator=(Node<T> && node) noexcept = default;
-    ~Node<T>() = default;
+    ~Node<T>() override = default;
 };
 
 }
@@ -51,13 +51,13 @@ public:
     /**
      * @brief Constructs a new stack.
      */
-    Stack<T>() : Base::StackBase<T>() { }
+    Stack<T>() : Base::StackBase<T>(), l() { }
 
     Stack<T>(const Stack<T> & stack) = delete;
     Stack<T> & operator=(const Stack<T> & stack) = delete;
     Stack<T>(Stack<T> && stack) noexcept = delete;
     Stack<T> & operator=(Stack<T> && stack) noexcept = delete;
-    ~Stack<T>() = default;
+    ~Stack<T>() override = default;
 
     T & push(const T & data) override
     {
@@ -89,7 +89,7 @@ public:
     size_t size() override { return l.size(); }
 
 private:
-    std::list<Node<T>> l; /**< Underlying list for the stack. */
+    std::list<Detail::Node<T>> l; /**< Underlying list for the stack. */
 };
 
 }

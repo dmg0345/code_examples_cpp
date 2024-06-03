@@ -18,7 +18,7 @@
 namespace CppDSA::Queue::List
 {
 
-namespace
+namespace Detail
 {
 
 /**
@@ -35,7 +35,7 @@ public:
     Node<T> & operator=(const Node<T> & node) = default;
     Node<T>(Node<T> && node) noexcept = default;
     Node<T> & operator=(Node<T> && node) noexcept = default;
-    ~Node<T>() = default;
+    ~Node<T>() override = default;
 };
 
 }
@@ -51,13 +51,13 @@ public:
     /**
      * @brief Constructs a new queue.
      */
-    Queue<T>() : Base::QueueBase<T>() { }
+    Queue<T>() : Base::QueueBase<T>(), l() { }
 
     Queue<T>(const Queue<T> & queue) = delete;
     Queue<T> & operator=(const Queue<T> & queue) = delete;
     Queue<T>(Queue<T> && queue) noexcept = delete;
     Queue<T> & operator=(Queue<T> && queue) noexcept = delete;
-    ~Queue<T>() = default;
+    ~Queue<T>() override = default;
 
     T & enqueue(const T & data) override
     {
@@ -92,7 +92,7 @@ public:
     size_t size() override { return l.size(); }
 
 private:
-    std::list<Node<T>> l; /**< Underlying list for the queue. */
+    std::list<Detail::Node<T>> l; /**< Underlying list for the queue. */
 };
 
 }

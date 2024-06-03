@@ -19,7 +19,7 @@
 namespace CppDSA::LinkedList::Doubly
 {
 
-namespace
+namespace Detail
 {
 
 /**
@@ -43,7 +43,7 @@ public:
     Node<T> & operator=(const Node<T> & node) = default;
     Node<T>(Node<T> && node) noexcept = default;
     Node<T> & operator=(Node<T> && node) noexcept = default;
-    ~Node<T>() = default;
+    ~Node<T>() override = default;
 
     Node<T> * next; /**< The next node in the list, or @c nullptr if last node. */
     Node<T> * prev; /**< The previous node in the list, or @c nullptr if last node. */
@@ -69,14 +69,14 @@ public:
     Doubly<T>(Doubly<T> && list) noexcept = delete;
     Doubly<T> & operator=(Doubly<T> && list) noexcept = delete;
 
-    ~Doubly<T>()
+    ~Doubly<T>() override
     {
         // Loop all nodes, if any, and erase them.
-        Node<T> * node = head;
+        Detail::Node<T> * node = head;
         while (node != nullptr)
         {
             // Get next node.
-            Node<T> * tmp = node->next;
+            Detail::Node<T> * tmp = node->next;
             // Delete node.
             delete node;
             // Update node for next run.
@@ -87,7 +87,7 @@ public:
     T & append(const T & data) override
     {
         // Create new node to append.
-        Node<T> * node = new Node<T>(data, nullptr, nullptr);
+        Detail::Node<T> * node = new Detail::Node<T>(data, nullptr, nullptr);
 
         if (this->length == 0U)
         {
@@ -115,7 +115,7 @@ public:
     void remove_last(typename std::remove_const<T>::type * const data) override
     {
         // Track node to remove.
-        Node<T> * const node = tail;
+        Detail::Node<T> * const node = tail;
 
         if (this->length == 0U)
         {
@@ -131,14 +131,14 @@ public:
         else
         {
             // Get the node previous to the tail.
-            Node<T> * curr_node = head;
+            Detail::Node<T> * curr_node = head;
             while (curr_node->next != tail)
             {
                 curr_node = curr_node->next;
             }
 
             // Get the node previous to the tail.
-            Node<T> * tmp = tail->prev;
+            Detail::Node<T> * tmp = tail->prev;
             // No next node in new tail.
             tmp->next = nullptr;
             // No previous node on old tail.
@@ -165,7 +165,7 @@ public:
     T & prepend(const T & data) override
     {
         // Create node.
-        Node<T> * node = new Node<T>(data, nullptr, nullptr);
+        Detail::Node<T> * node = new Detail::Node<T>(data, nullptr, nullptr);
 
         if (this->length == 0U)
         {
@@ -193,7 +193,7 @@ public:
     void remove_first(typename std::remove_const<T>::type * const data) override
     {
         // Track node to remove.
-        Node<T> * const node = head;
+        Detail::Node<T> * const node = head;
 
         if (this->length == 0U)
         {
@@ -209,7 +209,7 @@ public:
         else
         {
             // Keep track of node next to head.
-            Node<T> * const tmp = head->next;
+            Detail::Node<T> * const tmp = head->next;
             // No node next to old head.
             head->next = nullptr;
             // No node previous previous to new head.
@@ -249,10 +249,10 @@ public:
 
         // Create node to insert, since we are inserting in between head and tail, next and previous
         // nodes are guaranteed to exist.
-        Node<T> * node = new Node<T>(data, nullptr, nullptr);
+        Detail::Node<T> * node = new Detail::Node<T>(data, nullptr, nullptr);
 
         // Find node at the specified index, new node will be inserted after this.
-        Node<T> * curr_node = head;
+        Detail::Node<T> * curr_node = head;
         for (size_t i = 0U; i < index; i++)
         {
             curr_node = curr_node->next;
@@ -289,7 +289,7 @@ public:
 
         // Find node to remove, note since we are removing in between
         // the head and the tail, the next and previous nodes are guaranteed to exist.
-        Node<T> * curr_node = head;
+        Detail::Node<T> * curr_node = head;
         for (size_t i = 0U; i < index; i++)
         {
             curr_node = curr_node->next;
@@ -317,7 +317,7 @@ public:
     T & operator[](const size_t index) override
     {
         // Find the node at the specified index.
-        Node<T> * node = head;
+        Detail::Node<T> * node = head;
         for (size_t i = 0U; i < index; i++)
         {
             node = node->next;
@@ -335,8 +335,8 @@ public:
         }
 
         // Keep track of the previous node, current node and next node, and loop till the end.
-        Node<T> * curr = head;
-        Node<T> * next = nullptr;
+        Detail::Node<T> * curr = head;
+        Detail::Node<T> * next = nullptr;
         for (size_t i = 0; i < this->length; i++)
         {
             // Get next node for next run.
@@ -351,8 +351,8 @@ public:
     }
 
 private:
-    Node<T> * head; /**< Pointer to beginning of the linked list. */
-    Node<T> * tail; /**< Pointer to end of the linked list. */
+    Detail::Node<T> * head; /**< Pointer to beginning of the linked list. */
+    Detail::Node<T> * tail; /**< Pointer to end of the linked list. */
 };
 
 }

@@ -18,7 +18,7 @@
 namespace CppDSA::Stack::Vector
 {
 
-namespace
+namespace Detail
 {
 
 /**
@@ -35,7 +35,7 @@ public:
     Node<T> & operator=(const Node<T> & node) = default;
     Node<T>(Node<T> && node) noexcept = default;
     Node<T> & operator=(Node<T> && node) noexcept = default;
-    ~Node<T>() = default;
+    ~Node<T>() override = default;
 };
 
 }
@@ -64,7 +64,7 @@ public:
     Stack<T> & operator=(const Stack<T> & stack) = delete;
     Stack<T>(Stack<T> && stack) noexcept = delete;
     Stack<T> & operator=(Stack<T> && stack) noexcept = delete;
-    ~Stack<T>() = default;
+    ~Stack<T>() override = default;
 
     T & push(const T & data) override
     {
@@ -96,7 +96,7 @@ public:
     size_t size() override { return v.size(); }
 
 private:
-    std::vector<Node<T>> v; /**< Underlying vector for the stack. */
+    std::vector<Detail::Node<T>> v; /**< Underlying vector for the stack. */
 };
 
 }
