@@ -1,6 +1,6 @@
 /**
  ***********************************************************************************************************************
- * @file        test_binary_tree_pointers.cpp
+ * @file        test_binary_tree_vector.cpp
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
  * @version     ${PROJECT_VERSION}
@@ -13,21 +13,21 @@
 #include <array>
 
 using CppDSA::BinaryTree::Base::DepthFirstSearchType;
-using CppDSA::BinaryTree::Pointers::BinaryTree;
+using CppDSA::BinaryTree::Vector::BinaryTree;
 using Tests::Utils::Log;
 
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 
 /**
- * @brief Namespace for the tests of binary tree based on pointers.
+ * @brief Namespace for the tests of binary tree based on vector.
  */
-namespace Tests::CppDSA::BinaryTreePointers
+namespace Tests::CppDSA::BinaryTreeVector
 {
 
 /**
  * @brief Test suite, instantiated for every test.
  */
-class BinaryTreePointersTest : public testing::Test
+class BinaryTreeVectorTest : public testing::Test
 {
 protected:
     /**
@@ -44,7 +44,7 @@ protected:
 /**
  * @brief Tests a binary tree of integers.
  */
-TEST_F(BinaryTreePointersTest, Integer)
+TEST_F(BinaryTreeVectorTest, Integer)
 {
     BinaryTree<int> btint;
 

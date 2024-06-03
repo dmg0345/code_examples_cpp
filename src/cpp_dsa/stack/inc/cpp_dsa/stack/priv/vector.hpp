@@ -52,7 +52,7 @@ public:
      * @brief Constructs a new stack.
      * @param[in] capacity Reserve capacity in the underlying vector.
      */
-    Stack<T>(const size_t capacity = 0) : Base::StackBase<T>()
+    Stack<T>(const size_t capacity = 0) : Base::StackBase<T>(), v()
     {
         if (capacity > 0)
         {

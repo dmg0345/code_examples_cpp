@@ -12,6 +12,7 @@
 #define CPP_DSA_BINARY_TREE_HPP
 
 #include "priv/pointers.hpp"
+#include "priv/vector.hpp"
 
 /**
  * @brief C++ binary tree namespace
