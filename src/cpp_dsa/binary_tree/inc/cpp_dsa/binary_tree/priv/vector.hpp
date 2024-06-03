@@ -33,7 +33,6 @@ public:
     /**
      * @brief Constructs a new node.
      * @param[in] data The data for the node.
-     * @param[in] valid @c true if the node is valid in the vector, @c false if otherwise.
      */
     Node<T>(const T & data) : Base::NodeBase<T>(data), valid(true) { }
 
