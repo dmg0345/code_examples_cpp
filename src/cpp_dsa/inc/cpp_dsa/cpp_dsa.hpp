@@ -14,6 +14,7 @@
 #include "cpp_dsa/linked_list/linked_list.hpp"
 #include "cpp_dsa/stack/stack.hpp"
 #include "cpp_dsa/queue/queue.hpp"
+#include "cpp_dsa/binary_tree/binary_tree.hpp"
 
 /**
  * @brief C++ Data Structures and Algorithms namespace

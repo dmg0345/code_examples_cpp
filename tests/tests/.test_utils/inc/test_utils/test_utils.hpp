@@ -99,7 +99,7 @@ public:
      * @brief Move constructor.
      * @param[in] obj Log object.
      */
-    Log(Log && obj) noexcept : out(obj.out), level(obj.level), eol(std::move(obj.eol)), inst_num(inst_counter)
+    Log(Log && obj) noexcept : out(obj.out), level(obj.level), eol(std::move(obj.eol)), inst_num(obj.inst_num)
     {
         log("Move Constructor.");
     }

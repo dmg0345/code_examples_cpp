@@ -126,7 +126,7 @@ TEST_F(StackVectorTest, ConstantInteger)
  */
 TEST_F(StackVectorTest, Log)
 {
-    Stack<Log> slog(5);
+    Stack<Log> slog(1);
     Log tmp;
 
     // Push values to the stack.

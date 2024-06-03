@@ -19,7 +19,7 @@
 namespace CppDSA::LinkedList::Singly
 {
 
-namespace
+namespace Detail
 {
 
 /**
@@ -36,6 +36,12 @@ public:
      * @param[in] next The next node in the list.
      */
     Node(const T & data, Node<T> * const next) : Base::NodeBase<T>(data), next(next) { }
+
+    Node<T>(const Node<T> & node) = default;
+    Node<T> & operator=(const Node<T> & node) = default;
+    Node<T>(Node<T> && node) noexcept = default;
+    Node<T> & operator=(Node<T> && node) noexcept = default;
+    ~Node<T>() override = default;
 
     Node<T> * next; /**< The next node in the list, or @c nullptr if last node. */
 };
@@ -56,21 +62,18 @@ public:
     Singly<T>() : Base::LinkedListBase<T>(), head(nullptr), tail(nullptr) { }
 
     Singly<T>(const Singly<T> & list) = delete;
-
-    Singly<T> & operator=(const Singly<T> list) = delete;
-
+    Singly<T> & operator=(const Singly<T> & list) = delete;
     Singly<T>(Singly<T> && list) noexcept = delete;
-
     Singly<T> & operator=(Singly<T> && list) noexcept = delete;
 
-    ~Singly<T>()
+    ~Singly<T>() override
     {
         // Loop all nodes, if any, and erase them.
-        Node<T> * node = head;
+        Detail::Node<T> * node = head;
         while (node != nullptr)
         {
             // Get next node.
-            Node<T> * tmp = node->next;
+            Detail::Node<T> * tmp = node->next;
             // Delete node.
             delete node;
             // Update node for next run.
@@ -81,7 +84,7 @@ public:
     T & append(const T & data) override
     {
         // Create new node to append.
-        Node<T> * node = new Node<T>(data, nullptr);
+        Detail::Node<T> * node = new Detail::Node<T>(data, nullptr);
 
         if (this->length == 0U)
         {
@@ -107,7 +110,7 @@ public:
     void remove_last(typename std::remove_const<T>::type * const data) override
     {
         // Track node to remove.
-        Node<T> * const node = tail;
+        Detail::Node<T> * const node = tail;
 
         if (this->length == 0U)
         {
@@ -123,7 +126,7 @@ public:
         else
         {
             // Get the node previous to the tail.
-            Node<T> * curr_node = head;
+            Detail::Node<T> * curr_node = head;
             while (curr_node->next != tail)
             {
                 curr_node = curr_node->next;
@@ -153,7 +156,7 @@ public:
     T & prepend(const T & data) override
     {
         // Create node.
-        Node<T> * node = new Node<T>(data, nullptr);
+        Detail::Node<T> * node = new Detail::Node<T>(data, nullptr);
 
         if (this->length == 0U)
         {
@@ -179,7 +182,7 @@ public:
     void remove_first(typename std::remove_const<T>::type * const data) override
     {
         // Track node to remove.
-        Node<T> * const node = head;
+        Detail::Node<T> * const node = head;
 
         if (this->length == 0U)
         {
@@ -195,7 +198,7 @@ public:
         else
         {
             // Keep track of the node next to the head.
-            Node<T> * const tmp = head->next;
+            Detail::Node<T> * const tmp = head->next;
             // The head no longer points to any node.
             head->next = nullptr;
             // The next node to the previous head becomes the new head.
@@ -232,10 +235,10 @@ public:
         }
 
         // Create node to insert, since we are inserting in between head and tail, next is guaranteed to exist.
-        Node<T> * node = new Node<T>(data, nullptr);
+        Detail::Node<T> * node = new Detail::Node<T>(data, nullptr);
 
         // Find node at the specified index, new node will be inserted after this.
-        Node<T> * curr_node = head;
+        Detail::Node<T> * curr_node = head;
         for (size_t i = 0U; i < index; i++)
         {
             curr_node = curr_node->next;
@@ -268,14 +271,14 @@ public:
 
         // Find node previous to the node to remove, note since we are removing in between
         // the head and the tail, the next node is guaranteed to exist.
-        Node<T> * curr_node = head;
+        Detail::Node<T> * curr_node = head;
         for (size_t i = 0U; i < (index - 1U); i++)
         {
             curr_node = curr_node->next;
         }
 
         // Keep track of node to remove.
-        Node<T> * tmp = curr_node->next;
+        Detail::Node<T> * tmp = curr_node->next;
         // The next node of the node previous to the node to remove becomes the next node to the node to remove.
         curr_node->next = tmp->next;
         // The next node of the node to remove does not exist.
@@ -295,7 +298,7 @@ public:
     T & operator[](const size_t index) override
     {
         // Find the node at the specified index.
-        Node<T> * node = head;
+        Detail::Node<T> * node = head;
         for (size_t i = 0U; i < index; i++)
         {
             node = node->next;
@@ -313,9 +316,9 @@ public:
         }
 
         // Keep track of the previous node, current node and next node, and loop till the end.
-        Node<T> * prev = nullptr;
-        Node<T> * curr = head;
-        Node<T> * next = nullptr;
+        Detail::Node<T> * prev = nullptr;
+        Detail::Node<T> * curr = head;
+        Detail::Node<T> * next = nullptr;
         for (size_t i = 0; i < this->length; i++)
         {
             // Update next node for the next run.
@@ -333,8 +336,8 @@ public:
     }
 
 private:
-    Node<T> * head; /**< Pointer to beginning of the linked list. */
-    Node<T> * tail; /**< Pointer to end of the linked list. */
+    Detail::Node<T> * head; /**< Pointer to beginning of the linked list. */
+    Detail::Node<T> * tail; /**< Pointer to end of the linked list. */
 };
 
 }

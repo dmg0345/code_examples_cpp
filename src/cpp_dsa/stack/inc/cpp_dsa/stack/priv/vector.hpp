@@ -18,7 +18,7 @@
 namespace CppDSA::Stack::Vector
 {
 
-namespace
+namespace Detail
 {
 
 /**
@@ -30,6 +30,12 @@ class Node : public Base::NodeBase<T>
 {
 public:
     using Base::NodeBase<T>::NodeBase;
+
+    Node<T>(const Node<T> & node) = default;
+    Node<T> & operator=(const Node<T> & node) = default;
+    Node<T>(Node<T> && node) noexcept = default;
+    Node<T> & operator=(Node<T> && node) noexcept = default;
+    ~Node<T>() override = default;
 };
 
 }
@@ -46,13 +52,19 @@ public:
      * @brief Constructs a new stack.
      * @param[in] capacity Reserve capacity in the underlying vector.
      */
-    Stack<T>(const size_t capacity = 0) : Base::StackBase<T>()
+    Stack<T>(const size_t capacity = 0) : Base::StackBase<T>(), v()
     {
         if (capacity > 0)
         {
             v.reserve(capacity);
         }
     }
+
+    Stack<T>(const Stack<T> & stack) = delete;
+    Stack<T> & operator=(const Stack<T> & stack) = delete;
+    Stack<T>(Stack<T> && stack) noexcept = delete;
+    Stack<T> & operator=(Stack<T> && stack) noexcept = delete;
+    ~Stack<T>() override = default;
 
     T & push(const T & data) override
     {
@@ -84,7 +96,7 @@ public:
     size_t size() override { return v.size(); }
 
 private:
-    std::vector<Node<T>> v; /**< Underlying vector for the stack. */
+    std::vector<Detail::Node<T>> v; /**< Underlying vector for the stack. */
 };
 
 }
