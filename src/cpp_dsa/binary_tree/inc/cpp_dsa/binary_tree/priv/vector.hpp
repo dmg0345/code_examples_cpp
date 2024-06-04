@@ -15,6 +15,7 @@
 #include <stack>
 #include <vector>
 #include <unordered_map>
+#include <climits>
 
 namespace CppDSA::BinaryTree::Vector
 {
@@ -70,24 +71,27 @@ public:
     {
         Detail::Node<T> * node_added = nullptr;
 
-        // Create lambda to iterate all nodes until an invalid one is found.
-        auto iterator = [&node_added, &data](Detail::Node<T> & node) -> bool
+        // Create lambda to iterate all nodes until an invalid one is found that can be replaced.
+        auto iterator = [&node_added, &data](Detail::Node<T> & node, const size_t &) -> bool
         {
-            // If node is invalid, replace data and validate it again, afterwards stop the search.
+            // Check for invalid node to fill with valid data.
             if (!node.valid)
             {
+                // Fill data with new data.
                 node.data = data;
+                // Signal that node is now valid.
                 node.valid = true;
+                // Signal that node was added and exit.
                 node_added = &node;
                 return false;
             }
             // Continue looking for nodes.
             return true;
         };
-        // Loop all nodes.
-        bfs_node(iterator);
+        // Loop valid and invalid nodes.
+        bfs_node(iterator, false);
 
-        // If the node was still not added it means that there are no invalid nodes, thus add it afterwards.
+        // If the node was still not added it means that there are no invalid nodes, thus build it inline in the vector.
         if (node_added == nullptr)
         {
             v.emplace_back(data);
@@ -99,42 +103,69 @@ public:
 
     void remove(const T & data) override
     {
-        // TODO.
-        (void)data;
+        // On a first pass, find the node to delete and the bottom right most node.
+        size_t ndel_i = INT_MAX;
+        size_t nbrm_i = INT_MAX;
+        auto fiterator = [&ndel_i, &nbrm_i, &data](Detail::Node<T> & node, const size_t & node_i) -> bool
+        {
+            // Find node to delete.
+            ndel_i = (node.data == data) ? node_i : ndel_i;
+            // Keep track bottom right most node so far.
+            nbrm_i = node_i;
+            // Keep looking for nodes till the end.
+            return true;
+        };
+        // Traverse tree to find valid nodes.
+        bfs_node(fiterator, true);
+
+        // If no node to delete because of empty or no node with data given, then nothing to do.
+        if (ndel_i == INT_MAX)
+        {
+            return;
+        }
+
+        // If the nodes are different, then swap their data.
+        if (ndel_i != nbrm_i)
+        {
+            std::swap(*get_node(ndel_i), *get_node(nbrm_i));
+        }
+
+        // Destroy and invalidate node, now that it has been converted to a leaf without children.
+        Detail::Node<T> * ndel = get_node(nbrm_i);
+        ndel->data.~T();
+        ndel->valid = false;
     }
 
     bool contains(const T & data) override
     {
         bool ret_val = false;
+
         // Create iterator for the traverse of the tree.
-        auto iterator = [&ret_val, &data](Detail::Node<T> & node) -> bool
+        auto iterator = [&ret_val, &data](Detail::Node<T> & node, const size_t &) -> bool
         {
             // Check if data matches for valid nodes.
-            ret_val = ((node.valid) && (data == node.data));
+            ret_val = (data == node.data);
             return !ret_val;
         };
-        bfs_node(iterator);
+        bfs_node(iterator, true);
 
         return ret_val;
     }
 
-    bool empty() override { return size() == 0U; }
+    bool empty() override { return (!v.empty()) ? !(get_node(0U)->valid) : true; }
 
     size_t size() override
     {
         size_t count = 0U;
+
         // Create iterator for the traverse of the tree.
-        auto iterator = [&count](Detail::Node<T> & node) -> bool
+        auto iterator = [&count](Detail::Node<T> &, const size_t & node_i) -> bool
         {
-            // Count valid nodes for the size.
-            if (node.valid)
-            {
-                count++;
-            }
+            count = node_i + 1U;
             return true;
         };
-        // Perform traverse.
-        bfs_node(iterator);
+        // Perform traverse on valid nodes.
+        bfs_node(iterator, true);
 
         return count;
     }
@@ -142,46 +173,41 @@ public:
     void bfs(const Base::TraverseCallback<T> & callback) override
     {
         // Create iterator for the traverse of the tree.
-        auto iterator = [&callback](Detail::Node<T> & node) -> bool
-        {
-            // Return to user if node is valid, otherwise continue looking for nodes.
-            if (node.valid)
-            {
-                return callback(node.data);
-            }
-            return true;
-        };
-        // Perform traverse.
-        bfs_node(iterator);
+        auto iterator = [&callback](Detail::Node<T> & node, const size_t &) -> bool { return callback(node.data); };
+        // Perform traverse only on valid nodes.
+        bfs_node(iterator, true);
     }
 
     void dfs(const Base::DepthFirstSearchType & type, const Base::TraverseCallback<T> & callback) override
     {
         // Create iterator for the traverse of the tree.
-        auto iterator = [&callback](Detail::Node<T> & node) -> bool
-        {
-            // Return to user if node is valid, otherwise continue looking for nodes.
-            if (node.valid)
-            {
-                return callback(node.data);
-            }
-            return true;
-        };
-        // Perform traverse.
-        dfs_node(type, iterator);
+        auto iterator = [&callback](Detail::Node<T> & node, const size_t &) -> bool { return callback(node.data); };
+        // Perform traverse only on valid nodes.
+        dfs_node(type, iterator, true);
     }
 
 protected:
     /**
      * @brief Breath First Search for each valid / invalid node.
      * @param[in] callback Callback to execute on each node, return @c false to stop.
+     * @param[in] valid If @c true, executes the callback on valid nodes only.
      */
-    void bfs_node(const std::function<bool(Detail::Node<T> &)> & callback)
+    void bfs_node(const std::function<bool(Detail::Node<T> &, const size_t &)> & callback, const bool valid)
     {
         // Simply iterate all nodes by index.
         for (size_t index = 0U; index < v.size(); index++)
         {
-            if (!callback(*get_node(index)))
+            // Get the node at the specified index.
+            Detail::Node<T> * node = get_node(index);
+
+            // If only executing the callback on valid nodes, ensure the node is valid.
+            if ((valid) && (!node->valid))
+            {
+                continue;
+            }
+
+            // Execute the callback.
+            if (!callback(*node, index))
             {
                 break;
             }
@@ -192,8 +218,11 @@ protected:
      * @brief Depth First Search for each node.
      * @param[in] type The type of depth first search to perform.
      * @param[in] callback Callback to execute on each node, return @c false to stop.
+     * @param[in] valid If @c true, executes the callback on valid nodes only.
      */
-    void dfs_node(const Base::DepthFirstSearchType & type, const std::function<bool(Detail::Node<T> &)> & callback)
+    void dfs_node(const Base::DepthFirstSearchType & type,
+                  const std::function<bool(Detail::Node<T> &, const size_t)> & callback,
+                  const bool valid)
     {
         // If no nodes, then exit immediately.
         if (empty())
@@ -203,20 +232,20 @@ protected:
 
         // Stack and hash map auxiliary structures.
         std::stack<size_t> stack;
-        std::unordered_map<Detail::Node<T> *, bool> visited;
+        std::unordered_map<size_t, bool> visited;
 
         // Shortcut to execute callback.
-        auto run_cb = [&callback, &visited](Detail::Node<T> *& n) -> bool
+        auto run_cb = [&callback, &visited](Detail::Node<T> *& node, const size_t node_i) -> bool
         {
             // If the node has already been visited, do not execute callback.
-            if (visited.count(n) > 0U)
+            if (visited.count(node_i) > 0U)
             {
                 return true;
             }
             // Call callback and store return value.
-            const bool ret_val = callback(*n);
+            const bool ret_val = callback(*node, node_i);
             // Mark node as visited.
-            visited[n] = true; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            visited[node_i] = true;
 
             return ret_val;
         };
@@ -226,43 +255,45 @@ protected:
         while (!stack.empty())
         {
             // Get node from the stack.
-            const size_t index = stack.top();
-            Detail::Node<T> * node = get_node(index);
+            const size_t node_i = stack.top();
+            Detail::Node<T> * node = get_node(node_i);
 
             // On PreOrder, execute the callback prior to handling left and right subtrees of the node.
             if (type == Base::DepthFirstSearchType::pre_order)
             {
-                run_cb(node);
+                run_cb(node, node_i);
             }
 
-            // Add left node to stack if it exists and it was not already visited.
-            const size_t left_index = get_left_node_index(index);
-            Detail::Node<T> * left_node = get_node(left_index);
-            if ((left_node != nullptr) && (left_node->valid) && (visited.count(left_node) == 0U))
+            // Add left node to stack if it is valid and it was not already visited.
+            const size_t left_i = get_left_node_index(node_i);
+            Detail::Node<T> * left_n = get_node(left_i);
+            const bool left_v = ((left_n != nullptr) && (((valid) && (left_n->valid)) || (!valid)));
+            if ((left_v) && (visited.count(left_i) == 0U))
             {
-                stack.push(left_index);
+                stack.push(left_i);
                 continue;
             }
 
             // On InOrder, execute the callback after handling the left subtree of the node.
             if (type == Base::DepthFirstSearchType::in_order)
             {
-                run_cb(node);
+                run_cb(node, node_i);
             }
 
             // Add right node to stack if it exists and it was not already visited.
-            const size_t right_index = get_right_node_index(index);
-            Detail::Node<T> * right_node = get_node(right_index);
-            if ((right_node != nullptr) && (right_node->valid) && (visited.count(right_node) == 0U))
+            const size_t right_i = get_right_node_index(node_i);
+            Detail::Node<T> * right_n = get_node(right_i);
+            const bool right_v = ((right_n != nullptr) && (((valid) && (right_n->valid)) || (!valid)));
+            if ((right_v) && (visited.count(right_i) == 0U))
             {
-                stack.push(right_index);
+                stack.push(right_i);
                 continue;
             }
 
             // On PostOrder, execute the callback after handling both left and right subtrees of the node.
             if (type == Base::DepthFirstSearchType::post_order)
             {
-                run_cb(node);
+                run_cb(node, node_i);
             }
 
             // Remove node from the stack, it's left and right subtrees have already been handled.
@@ -278,18 +309,45 @@ protected:
     Detail::Node<T> * get_node(const size_t index) { return (index >= v.size()) ? nullptr : &v[index]; }
 
     /**
+     * @brief Determines if a node at the specified index is valid.
+     * @param[in] index The index of the node.
+     * @return @c true if valid, or @c false if it doesn't exist or invalid.
+     */
+    bool is_valid_node(const size_t index)
+    {
+        // Get the node.
+        Detail::Node<T> * node = get_node(index);
+        // If node doesn't exist or invalid, return false, otherwise true.
+        return (node == nullptr) ? false : node->valid;
+    }
+
+    /**
      * @brief Gets the index of the left node of a node.
      * @param[in] index The index.
      * @return The index left of a node.
      */
-    constexpr size_t get_left_node_index(const size_t index) { return ((index * 2U) + 1U); }
+    static constexpr size_t get_left_node_index(const size_t index) { return ((index * 2U) + 1U); }
+
+    /**
+     * @brief Determines if the index given is for a left node.
+     * @param[in] index The index.
+     * @return @c true if the index is for a left node, @c false otherwise.
+     */
+    static constexpr bool is_left_node_index(const size_t index) { return ((index & 1U) == 1U); }
 
     /**
      * @brief Gets the index of the right node of a node.
      * @param[in] index The index.
      * @return The index right of a node.
      */
-    constexpr size_t get_right_node_index(const size_t index) { return ((index * 2U) + 2U); }
+    static constexpr size_t get_right_node_index(const size_t index) { return ((index * 2U) + 2U); }
+
+    /**
+     * @brief Determines if the index given is for a right node.
+     * @param[in] index The index.
+     * @return @c true if the index is for a right node, @c false otherwise.
+     */
+    static constexpr bool is_right_node_index(const size_t index) { return !is_left_node_index(index); }
 
     std::vector<Detail::Node<T>> v; /**< The underlying vector. */
 };
