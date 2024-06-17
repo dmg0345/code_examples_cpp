@@ -14,7 +14,6 @@
 
 using CppDSA::BinaryTree::Base::DepthFirstSearchType;
 using CppDSA::BinaryTree::Vector::BinaryTree;
-using Tests::Utils::Log;
 
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 
@@ -33,7 +32,7 @@ protected:
     /**
      * @brief Setup function, called after the constructor in every test.
      */
-    void SetUp() override { Log::num_reset(); }
+    void SetUp() override { }
 
     /**
      * @brief Teardown function, called before the destructor in every test.
@@ -124,6 +123,27 @@ TEST_F(BinaryTreeVectorTest, Integer)
     ASSERT_TRUE(btint.contains(9U));
     ASSERT_TRUE(btint.contains(12U));
     ASSERT_TRUE(btint.contains(14U));
+
+    // Remove all nodes in random order.
+    btint.remove(7U);
+    btint.remove(8U);
+    btint.remove(3U);
+    btint.remove(9U);
+    btint.remove(10U);
+    btint.remove(4U);
+    btint.remove(1U);
+    btint.remove(11U);
+    btint.remove(12U);
+    btint.remove(5U);
+    btint.remove(13U);
+    btint.remove(0U);
+    btint.remove(14U);
+    btint.remove(6U);
+    btint.remove(2U);
+
+    // Check empty and size.
+    ASSERT_EQ(btint.size(), 0U);
+    ASSERT_TRUE(btint.empty());
 }
 
 }

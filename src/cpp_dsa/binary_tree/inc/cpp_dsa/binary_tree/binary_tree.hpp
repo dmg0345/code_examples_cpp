@@ -44,7 +44,7 @@ namespace CppDSA::BinaryTree::Vector
 /**
  * @brief C++ binary tree pointers namespace
  * @rst
- * Binary tree with pointers implementation.
+ * Binary tree and binary search tree with pointers implementation.
  * @endrst
  */
 namespace CppDSA::BinaryTree::Pointers

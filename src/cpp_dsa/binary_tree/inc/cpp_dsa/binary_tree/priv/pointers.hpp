@@ -123,8 +123,101 @@ public:
 
     void remove(const T & data) override
     {
-        // TODO.
-        (void)data;
+        // On a first pass, find the node to delete and the bottom right most node.
+        Detail::Node<T> * ndel = nullptr;
+        Detail::Node<T> * nbrm = nullptr;
+        auto fiterator = [&ndel, &nbrm, &data](Detail::Node<T> & node) -> bool
+        {
+            // Find node to delete.
+            if (ndel == nullptr)
+            {
+                ndel = (node.data == data) ? &node : nullptr;
+            }
+            // Keep track bottom right most node so far.
+            nbrm = &node;
+            // Keep looking for nodes till the end.
+            return true;
+        };
+        // Traverse tree to find nodes.
+        bfs_node(fiterator);
+
+        // If no node to delete because of empty or no node with data given, then nothing to do.
+        if (ndel == nullptr)
+        {
+            return;
+        }
+
+        // On a second pass, find the parent link to the node to delete and bottom right most node.
+        Detail::Node<T> ** ndel_par_link = nullptr;
+        Detail::Node<T> ** nbrm_par_link = nullptr;
+        auto siterator = [&ndel_par_link, &nbrm_par_link, &ndel, &nbrm](Detail::Node<T> & node) -> bool
+        {
+            // Find parent link for deleted node.
+            if (node.left == ndel)
+            {
+                ndel_par_link = &node.left;
+            }
+            else if (node.right == ndel)
+            {
+                ndel_par_link = &node.right;
+            }
+            // Find parent link for right most node.
+            if (node.left == nbrm)
+            {
+                nbrm_par_link = &node.left;
+            }
+            else if (node.right == nbrm)
+            {
+                nbrm_par_link = &node.right;
+            }
+            // Keep looking till all nodes found.
+            return ((ndel_par_link == nullptr) || (nbrm_par_link == nullptr));
+        };
+        // Traverse tree to find parents of the nodes.
+        bfs_node(siterator);
+
+        // Handle children of the nodes //
+
+        // Swap left and right nodes of the bottom right most node and the node to delete.
+        if (nbrm != ndel)
+        {
+            std::swap(nbrm->left, ndel->left);
+            std::swap(nbrm->right, ndel->right);
+
+            // Ensure no self loops, this can occur when nodes are related as parent - child.
+            nbrm->left = (nbrm->left == nbrm) ? nullptr : nbrm->left;
+            nbrm->right = (nbrm->right == nbrm) ? nullptr : nbrm->right;
+        }
+
+        // Handle parents of the nodes //
+
+        // If the node to delete has no parent, then the root is being deleted.
+        if (ndel_par_link == nullptr)
+        {
+            // If bottom right most node has no parent, then it is also the root and tree become empty.
+            if (nbrm_par_link == nullptr)
+            {
+                root = nullptr;
+            }
+            else
+            {
+                // Update root to bottom right most node.
+                root = nbrm;
+                // Update parent link of previous bottom right most node to no node.
+                *nbrm_par_link = nullptr;
+            }
+        }
+        // If there is a parent to the node to delete, then there is also a parent to the bottom right most node.
+        else
+        {
+            // Update parent link of deleted node to bottom right most node.
+            *ndel_par_link = nbrm;
+            // Update parent link of previous bottom right most node to no node.
+            *nbrm_par_link = nullptr;
+        }
+
+        // Delete node, now that it has been converted to a leaf node without left or right nodes.
+        delete ndel;
     }
 
     bool contains(const T & data) override
@@ -190,7 +283,7 @@ protected:
             return;
         }
 
-        // Queue auxiliary structures.
+        // Queue auxiliary structure.
         std::queue<Detail::Node<T> *> queue;
 
         // Add root node to queue and start the loop.
@@ -298,6 +391,197 @@ protected:
     }
 
     Detail::Node<T> * root; /**< The root node of the binary tree. */
+};
+
+/**
+ * @brief Binary search tree.
+ * @tparam T Type of data in the binary search tree.
+ */
+template<typename T>
+class BinarySearchTree : public BinaryTree<T>
+{
+public:
+    /**
+     * @brief Constructs a new binary search tree.
+     */
+    BinarySearchTree<T>() : BinaryTree<T>() { }
+
+    BinarySearchTree<T>(const BinarySearchTree<T> & bt) = delete;
+    BinarySearchTree<T> & operator=(const BinarySearchTree<T> & bt) = delete;
+    BinarySearchTree<T>(BinarySearchTree<T> && bt) noexcept = delete;
+    BinarySearchTree<T> & operator=(BinarySearchTree<T> && bt) noexcept = delete;
+    ~BinarySearchTree<T>() override = default;
+
+    T & insert(const T & data) override
+    {
+        // Create node.
+        Detail::Node<T> * new_node = new Detail::Node<T>(data, nullptr, nullptr);
+
+        // If empty, then assign root node.
+        if (BinaryTree<T>::empty())
+        {
+            BinaryTree<T>::root = new_node;
+        }
+        else
+        {
+            // Insert in order in the tree, with less than or equal to root in the left subtree.
+            Detail::Node<T> * node = BinaryTree<T>::root;
+            while (true)
+            {
+                // If less or equal than the data.
+                if (new_node->data <= node->data)
+                {
+                    if (node->left == nullptr)
+                    {
+                        node->left = new_node;
+                        break;
+                    }
+                    node = node->left;
+                }
+                // If greater than the data, then add right.
+                else
+                {
+                    if (node->right == nullptr)
+                    {
+                        node->right = new_node;
+                        break;
+                    }
+                    node = node->right;
+                }
+            }
+        }
+
+        return new_node->data;
+    }
+
+    void remove(const T & data) override
+    {
+        // If the tree is empty return immediately.
+        if (BinaryTree<T>::empty())
+        {
+            return;
+        }
+
+        // Find node to delete and its link to the parent.
+        Detail::Node<T> * node = BinaryTree<T>::root;
+        Detail::Node<T> ** par_link = nullptr;
+        while (node != nullptr)
+        {
+            // Check if node found.
+            if (node->data == data)
+            {
+                break;
+            }
+
+            // Move to left or right node.
+            if (data < node->data)
+            {
+                par_link = &node->left;
+                node = node->left;
+            }
+            else
+            {
+                par_link = &node->right;
+                node = node->right;
+            }
+        }
+
+        // If there is nothing to remove, return.
+        if (node == nullptr)
+        {
+            return;
+        }
+
+        // Handle a leaf node being removed.
+        if ((node->left == nullptr) && (node->right == nullptr))
+        {
+            // If there is no parent link, then it is the root node being removed.
+            if (par_link == nullptr)
+            {
+                BinaryTree<T>::root = nullptr;
+            }
+            // Otherwise, remove the link from the parent to the node.
+            else
+            {
+                *par_link = nullptr;
+            }
+        }
+        // Handle a node that has a left child node and a right child node.
+        else if ((node->left != nullptr) && (node->right != nullptr))
+        {
+            // Get minimum value in the right child of the node, that is, the bottom left most node.
+            Detail::Node<T> ** blm_par_link = &node->right;
+            Detail::Node<T> * blm_node = node->right;
+            while (blm_node->left != nullptr)
+            {
+                blm_par_link = &blm_node->left;
+                blm_node = blm_node->left;
+            }
+
+            // If there is no parent link, then the root is being removed.
+            if (par_link == nullptr)
+            {
+                BinaryTree<T>::root = blm_node;
+            }
+            else
+            {
+                *par_link = blm_node;
+            }
+
+            // Bottom left most node will have no left children, assign children if any of the node to delete.
+            blm_node->left = node->left;
+            // Bottom left most node can have right children, which are assigned to the parent link.
+            *blm_par_link = blm_node->right;
+            // Bottom left most node right children become those of the node to delete.
+            blm_node->right = node->right;
+        }
+        // Handle a note that has a left child node or a right child node.
+        else
+        {
+            // Get child node.
+            Detail::Node<T> * child_node = (node->left == nullptr) ? node->right : node->left;
+
+            // If there is no parent link, then the root is being removed.
+            if (par_link == nullptr)
+            {
+                BinaryTree<T>::root = child_node;
+            }
+            // Otherwise, make the parent link of the node to remove point to child node.
+            else
+            {
+                *par_link = child_node;
+            }
+        }
+
+        // Delete node.
+        delete node;
+    }
+
+    bool contains(const T & data) override
+    {
+        Detail::Node<T> * node = BinaryTree<T>::root;
+
+        while (node != nullptr)
+        {
+            // If node found, then return true.
+            if (node->data == data)
+            {
+                return true;
+            }
+
+            // Switch to left or right node next.
+            if (data < node->data)
+            {
+                node = node->left;
+            }
+            else
+            {
+                node = node->right;
+            }
+        }
+
+        return false;
+    }
 };
 
 }
