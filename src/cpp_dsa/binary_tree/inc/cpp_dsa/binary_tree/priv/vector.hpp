@@ -50,7 +50,7 @@ public:
 
 /**
  * @brief Binary tree class.
- * @tparam T Type of the data in the stack.
+ * @tparam T Type of the data in the binary tree.
  */
 template<typename T>
 class BinaryTree : public Base::BinaryTreeBase<T>
@@ -322,6 +322,26 @@ protected:
     }
 
     /**
+     * @brief Obtains the index of the parent node given a left or right node index.
+     * @param[in] index The index.
+     * @return The index of the parent node, or @c INT_MAX if the index is the root node.
+     */
+    static constexpr size_t get_parent_node_index(const size_t index)
+    {
+        // If index of the root node, then return a fixed value.
+        if (index == 0U)
+        {
+            return INT_MAX;
+        }
+        // Check if left or right node index to determine parent index.
+        if (is_left_node_index(index))
+        {
+            return index / 2U;
+        }
+        return (index - 1U) / 2U;
+    }
+
+    /**
      * @brief Gets the index of the left node of a node.
      * @param[in] index The index.
      * @return The index left of a node.
@@ -350,6 +370,125 @@ protected:
     static constexpr bool is_right_node_index(const size_t index) { return !is_left_node_index(index); }
 
     std::vector<Detail::Node<T>> v; /**< The underlying vector. */
+};
+
+/**
+ * @brief Binary tree class.
+ * @tparam T Type of the data in the maximum heap.
+ */
+template<typename T>
+class MaximumHeap : public BinaryTree<T>
+{
+public:
+    /**
+     * @brief Constructs a new maximum heap.
+     */
+    MaximumHeap<T>() : BinaryTree<T>() { }
+
+    MaximumHeap<T>(const MaximumHeap<T> & bt) = delete;
+    MaximumHeap<T> & operator=(const MaximumHeap<T> & bt) = delete;
+    MaximumHeap<T>(MaximumHeap<T> && bt) noexcept = delete;
+    MaximumHeap<T> & operator=(MaximumHeap<T> && bt) noexcept = delete;
+    ~MaximumHeap<T>() override = default;
+
+    /**
+     * @brief The data of the new node to push into the maximum heap.
+     * @param[in] data The data of the node to be added.
+     * @return The data of the node added.
+     */
+    T & push(const T & data)
+    {
+        // Add the element to the bottom of the heap.
+        BinaryTree<T>::v.emplace_back(data);
+
+        // Move element added up in the tree as required.
+        size_t node_index = BinaryTree<T>::v.size() - 1U;
+        size_t parent_index = BinaryTree<T>::get_parent_node_index(node_index);
+        while (parent_index != INT_MAX)
+        {
+            // Check if the new node needs to be swapped with its parent.
+            if (BinaryTree<T>::v[node_index].data > BinaryTree<T>::v[parent_index].data)
+            {
+                // Perform of child node with parent node.
+                std::swap(BinaryTree<T>::v[node_index], BinaryTree<T>::v[parent_index]);
+                // Update indices of new node and its new parent, if any.
+                node_index = parent_index;
+                parent_index = BinaryTree<T>::get_parent_node_index(node_index);
+            }
+            // If no need to be swapped, then the node is already at the correct place.
+            else
+            {
+                break;
+            }
+        }
+
+        return BinaryTree<T>::v[node_index].data;
+    }
+
+    /**
+     * @brief Removes the top node from the maximum heap.
+     */
+    void pop()
+    {
+        // Check if there is something to remove.
+        size_t size = BinaryTree<T>::v.size();
+        if (size == 0U)
+        {
+            return;
+        }
+
+        // If there is more than one element, then swap the root with the bottom element.
+        if (size > 1U)
+        {
+            std::swap(BinaryTree<T>::v[0U], BinaryTree<T>::v[size - 1U]);
+        }
+
+        // Destroy the bottom element, now the root.
+        BinaryTree<T>::v.pop_back();
+        size--;
+
+        // Check if the element now at the root needs to be rearranged.
+        if (size > 1U)
+        {
+            size_t node_i = 0U;
+            while (true)
+            {
+                // Get indices of left and right child nodes.
+                const size_t lnode_i = BinaryTree<T>::get_left_node_index(node_i);
+                const size_t rnode_i = BinaryTree<T>::get_right_node_index(node_i);
+
+                // Get the largest node between the node and its children, if they exist.
+                size_t lgnode_i = node_i;
+                if ((lnode_i < size) && (BinaryTree<T>::v[lnode_i].data >= BinaryTree<T>::v[lgnode_i].data))
+                {
+                    lgnode_i = lnode_i;
+                }
+                if ((rnode_i < size) && (BinaryTree<T>::v[rnode_i].data >= BinaryTree<T>::v[lgnode_i].data))
+                {
+                    lgnode_i = rnode_i;
+                }
+
+                // If the largest node is the node already, then exit as node is in the right place.
+                if (lgnode_i == node_i)
+                {
+                    break;
+                }
+                // Otherwise swap node with largest child and continue.
+                std::swap(BinaryTree<T>::v[node_i], BinaryTree<T>::v[lgnode_i]);
+                node_i = lgnode_i;
+            }
+        }
+    }
+
+    /**
+     * @brief Retrieves the value of the top node in the maximum heap.
+     * @return The value of the top node.
+     */
+    T & top() { return BinaryTree<T>::v[0U].data; }
+
+protected:
+    using BinaryTree<T>::insert;
+    using BinaryTree<T>::remove;
 };
 
 }

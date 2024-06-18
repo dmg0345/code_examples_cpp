@@ -15,6 +15,8 @@
 #include "cpp_dsa/stack/stack.hpp"
 #include "cpp_dsa/queue/queue.hpp"
 #include "cpp_dsa/binary_tree/binary_tree.hpp"
+#include "cpp_dsa/hash_table/hash_table.hpp"
+#include "cpp_dsa/graph/graph.hpp"
 
 /**
  * @brief C++ Data Structures and Algorithms namespace

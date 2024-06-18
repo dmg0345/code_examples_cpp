@@ -68,3 +68,5 @@ License
     cpp_dsa/stack/index
     cpp_dsa/queue/index
     cpp_dsa/binary_tree/index
+    cpp_dsa/hash_table/index
+    cpp_dsa/graph/index
