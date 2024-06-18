@@ -196,7 +196,7 @@ protected:
         size_t count = 0;
         for (const auto & c : key)
         {
-            count += c;
+            count += static_cast<const size_t>(c);
         }
         return count % N;
     }
