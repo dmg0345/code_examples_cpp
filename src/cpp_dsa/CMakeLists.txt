@@ -10,6 +10,12 @@ add_subdirectory("queue")
 ## Add Binary Trees ####################################################################################################
 add_subdirectory("binary_tree")
 
+## Add Hash Tables #####################################################################################################
+add_subdirectory("hash_table")
+
+## Add Graph ###########################################################################################################
+add_subdirectory("graph")
+
 ## All layer sources and include directories ###########################################################################
 # Collect source files of all components.
 set(SOURCES_CPP_DSA
@@ -17,6 +23,8 @@ set(SOURCES_CPP_DSA
     ${SOURCES_CPP_DSA_STACK}
     ${SOURCES_CPP_DSA_QUEUE}
     ${SOURCES_CPP_DSA_BINARY_TREE}
+    ${SOURCES_CPP_DSA_HASH_TABLE}
+    ${SOURCES_CPP_DSA_GRAPH}
     CACHE INTERNAL ""
 )
 
@@ -27,5 +35,7 @@ set(INCLUDE_DIRS_CPP_DSA
     ${INCLUDE_DIRS_CPP_DSA_STACK}
     ${INCLUDE_DIRS_CPP_DSA_QUEUE}
     ${INCLUDE_DIRS_CPP_DSA_BINARY_TREE}
+    ${INCLUDE_DIRS_CPP_DSA_HASH_TABLE}
+    ${INCLUDE_DIRS_CPP_DSA_GRAPH}
     CACHE INTERNAL ""
 )

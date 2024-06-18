@@ -86,7 +86,7 @@ enum class DepthFirstSearchType : size_t
 
 /**
  * @brief Binary tree base class.
- * @tparam T Type of the data in the stack.
+ * @tparam T Type of the data in the binary tree.
  */
 template<typename T>
 class BinaryTreeBase

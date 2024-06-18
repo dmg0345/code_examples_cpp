@@ -35,7 +35,7 @@ namespace CppDSA::BinaryTree::Base
 /**
  * @brief C++ binary tree vector namespace
  * @rst
- * Binary tree with `std::vector` implementation.
+ * Binary tree and maximum heap with `std::vector` implementation.
  * @endrst
  */
 namespace CppDSA::BinaryTree::Vector

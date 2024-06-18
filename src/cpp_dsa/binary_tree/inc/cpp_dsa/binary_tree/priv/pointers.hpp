@@ -56,7 +56,7 @@ public:
 
 /**
  * @brief Binary tree class.
- * @tparam T Type of the data in the stack.
+ * @tparam T Type of the data in the binary tree.
  */
 template<typename T>
 class BinaryTree : public Base::BinaryTreeBase<T>
