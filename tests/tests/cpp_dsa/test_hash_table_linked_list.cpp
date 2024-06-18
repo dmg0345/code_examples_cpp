@@ -55,7 +55,7 @@ TEST_F(HashTableLinkedList, StringInteger)
 
     // Check sizes.
     ASSERT_EQ(ht.size(), 6U);
-    ASSERT_TRUE(ht.empty());
+    ASSERT_FALSE(ht.empty());
 
     // Get values.
     ASSERT_EQ(ht.get("F"), 5U);
